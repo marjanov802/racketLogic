@@ -1,0 +1,208 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─── ENUMS ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum BookingStatus {
+  NEW
+  CONFIRMED
+  IN_PROGRESS
+  READY_FOR_COLLECTION
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  DEPOSIT_PAID
+  PAID
+  REFUNDED
+}
+
+enum EnquiryStatus {
+  NEW
+  REVIEWING
+  RESPONDED
+  CLOSED
+}
+
+// ─── MODELS ───────────────────────────────────────────────────────────────────
+
+model User {
+  id        String     @id @default(cuid())
+  clerkId   String     @unique
+  name      String?
+  email     String     @unique
+  role      Role       @default(USER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  bookings  Booking[]
+  purchases Purchase[]
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  userId          String?
+  serviceType     String
+  customerName    String
+  email           String
+  phone           String
+  racketModel     String?
+  currentString   String?
+  currentTension  String?
+  desiredTension  String?
+  playingLevel    String?
+  howOften        String?
+  playGoals       String[]      // power, spin, control, comfort, durability
+  armIssues       Boolean       @default(false)
+  armIssuesDetail String?
+  deliveryMethod  String        // drop-off, collection, postal
+  notes           String?
+  status          BookingStatus @default(NEW)
+  price           Decimal?      @db.Decimal(10, 2)
+  paymentStatus   PaymentStatus @default(UNPAID)
+  adminNotes      String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  user User? @relation(fields: [userId], references: [id])
+}
+
+model Playbook {
+  id             String     @id @default(cuid())
+  title          String
+  slug           String     @unique
+  description    String
+  longDescription String?   @db.Text
+  price          Decimal    @db.Decimal(10, 2)
+  previewContent String?    @db.Text
+  fileUrl        String?
+  coverImage     String?
+  category       String
+  tags           String[]
+  isBundle       Boolean    @default(false)
+  published      Boolean    @default(false)
+  featured       Boolean    @default(false)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  purchases    Purchase[]
+  bundleItems  BundleItem[] @relation("BundleContains")
+  memberOf     BundleItem[] @relation("PlaybookInBundle")
+}
+
+model BundleItem {
+  id         String   @id @default(cuid())
+  bundleId   String
+  playbookId String
+
+  bundle   Playbook @relation("BundleContains", fields: [bundleId], references: [id], onDelete: Cascade)
+  playbook Playbook @relation("PlaybookInBundle", fields: [playbookId], references: [id], onDelete: Cascade)
+
+  @@unique([bundleId, playbookId])
+}
+
+model Purchase {
+  id              String        @id @default(cuid())
+  userId          String
+  playbookId      String?
+  productType     String        // playbook, bundle
+  amount          Decimal       @db.Decimal(10, 2)
+  stripeSessionId String?       @unique
+  paymentStatus   PaymentStatus @default(UNPAID)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id])
+  playbook Playbook? @relation(fields: [playbookId], references: [id])
+}
+
+model ReviewArticle {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  category     String
+  productName  String
+  brand        String
+  excerpt      String
+  content      String   @db.Text
+  affiliateUrl String?
+  rating       Int?     // 1-10
+  whoIsItFor   String?
+  whoIsItNotFor String?
+  mainBenefit  String?
+  mainDownside String?
+  verdict      String?
+  published    Boolean  @default(false)
+  featured     Boolean  @default(false)
+  coverImage   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model LearnArticle {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String
+  excerpt     String
+  content     String   @db.Text
+  published   Boolean  @default(false)
+  featured    Boolean  @default(false)
+  coverImage  String?
+  readingTime Int?     // minutes
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CustomProgrammeEnquiry {
+  id                    String        @id @default(cuid())
+  name                  String
+  email                 String
+  age                   String?
+  playingLevel          String
+  yearsPlaying          String?
+  howOften              String?
+  goal                  String
+  weakness              String?
+  currentRoutine        String?
+  trainingDaysPerWeek   String?
+  sessionLength         String?
+  playsMatches          Boolean       @default(false)
+  hasCoaching           Boolean       @default(false)
+  injuriesOrLimitations String?
+  areasToImprove        String[]
+  programmeDuration     String?       // 4-week, 8-week
+  notes                 String?
+  status                EnquiryStatus @default(NEW)
+  adminNotes            String?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+}
+
+model ContactEnquiry {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  enquiryType String
+  message     String   @db.Text
+  preferredDate String?
+  racketDetails String?
+  status      String   @default("NEW")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

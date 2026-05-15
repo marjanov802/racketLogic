@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack --yes)",
+      "Bash(mkdir -p \"c:/Users/Marjanov/git/racketLogic/src/app/\\(public\\)/playbooks/[slug]\" \"c:/Users/Marjanov/git/racketLogic/src/components/playbooks\" \"c:/Users/Marjanov/git/racketLogic/src/app/api/stripe/checkout\" \"c:/Users/Marjanov/git/racketLogic/src/app/api/stripe/webhook\" \"c:/Users/Marjanov/git/racketLogic/src/app/api/download/[id]\")",
+      "Bash(mkdir -p \"c:/Users/Marjanov/git/racketLogic/src/app/\\(public\\)/training\" \"c:/Users/Marjanov/git/racketLogic/src/app/\\(public\\)/reviews/[slug]\" \"c:/Users/Marjanov/git/racketLogic/src/app/\\(public\\)/learn/[slug]\" \"c:/Users/Marjanov/git/racketLogic/src/app/\\(public\\)/custom-programmes\" \"c:/Users/Marjanov/git/racketLogic/src/app/\\(public\\)/about\" \"c:/Users/Marjanov/git/racketLogic/src/app/\\(public\\)/contact\" \"c:/Users/Marjanov/git/racketLogic/src/app/api/enquiries\" \"c:/Users/Marjanov/git/racketLogic/src/app/api/contact\")",
+      "Bash(mkdir -p \"c:/Users/Marjanov/git/racketLogic/src/app/admin/bookings/[id]\" \"c:/Users/Marjanov/git/racketLogic/src/app/admin/playbooks/new\" \"c:/Users/Marjanov/git/racketLogic/src/app/admin/playbooks/[id]\" \"c:/Users/Marjanov/git/racketLogic/src/app/admin/reviews/new\" \"c:/Users/Marjanov/git/racketLogic/src/app/admin/reviews/[id]\" \"c:/Users/Marjanov/git/racketLogic/src/app/admin/articles/new\" \"c:/Users/Marjanov/git/racketLogic/src/app/admin/articles/[id]\" \"c:/Users/Marjanov/git/racketLogic/src/app/admin/enquiries/[id]\" \"c:/Users/Marjanov/git/racketLogic/src/app/admin/users\" \"c:/Users/Marjanov/git/racketLogic/src/components/admin\")",
+      "Bash(mkdir -p \"c:/Users/Marjanov/git/racketLogic/src/app/api/admin/bookings/[id]\" \"c:/Users/Marjanov/git/racketLogic/src/app/api/admin/playbooks/[id]\" \"c:/Users/Marjanov/git/racketLogic/src/app/api/admin/reviews/[id]\" \"c:/Users/Marjanov/git/racketLogic/src/app/api/admin/articles/[id]\" \"c:/Users/Marjanov/git/racketLogic/src/app/api/admin/enquiries/[id]\")",
+      "Bash(mkdir -p \"c:/Users/Marjanov/git/racketLogic/src/app/sign-in/[[...sign-in]]\" \"c:/Users/Marjanov/git/racketLogic/src/app/sign-up/[[...sign-up]]\")",
+      "Bash(npm install *)",
+      "Bash(npx prisma *)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Marjanov\\git\\racketLogic\\src\\app\\(public)\\playbooks",
+      "c:\\Users\\Marjanov\\git\\racketLogic\\src\\app\\(public)\\reviews",
+      "c:\\Users\\Marjanov\\git\\racketLogic\\src\\app\\admin\\bookings",
+      "c:\\Users\\Marjanov\\git\\racketLogic\\src\\app\\api\\admin\\bookings",
+      "c:\\Users\\Marjanov\\git\\racketLogic\\src\\app\\sign-in"
+    ]
+  }
+}
