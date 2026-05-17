@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Plus, Pencil } from 'lucide-react'
+import { DeleteButton } from '@/components/admin/DeleteButton'
 
 async function getPlaybooks() {
   try {
@@ -74,10 +75,12 @@ export default async function AdminPlaybooksPage() {
                     </Badge>
                   </td>
                   <td className="px-4 py-3">
-                    <Link href={`/admin/playbooks/${pb.id}`} className="text-lime-600 hover:underline text-xs font-medium flex items-center gap-1">
-                      <Pencil className="w-3 h-3" />
-                      Edit
-                    </Link>
+                    <div className="flex items-center gap-3">
+                      <Link href={`/admin/playbooks/${pb.id}`} className="text-lime-600 hover:underline text-xs font-medium flex items-center gap-1">
+                        <Pencil className="w-3 h-3" />Edit
+                      </Link>
+                      <DeleteButton endpoint={`/api/admin/playbooks/${pb.id}`} label={pb.title} />
+                    </div>
                   </td>
                 </tr>
               ))}

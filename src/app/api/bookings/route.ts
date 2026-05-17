@@ -9,18 +9,24 @@ const bookingSchema = z.object({
   email: z.string().email(),
   phone: z.string().optional(),
   racketModel: z.string().optional(),
-  currentString: z.string().optional(),
-  currentTension: z.string().optional(),
+  stringName: z.string().optional(),
   desiredTension: z.string().optional(),
-  playingLevel: z.string().optional(),
   howOften: z.string().optional(),
   playGoals: z.array(z.string()).optional(),
   armIssues: z.boolean().optional(),
   armIssuesDetail: z.string().optional(),
   serviceType: z.string().min(1),
-  deliveryMethod: z.string().min(1),
+  dropOffLocation: z.string().min(1),
   notes: z.string().optional(),
 })
+
+const DROP_OFF_LABELS: Record<string, string> = {
+  'home-ub5': 'Home address — Northolt (UB5) — 24hr turnaround available',
+  'west-middlesex': 'West Middlesex Tennis Club',
+  'ealing': 'Ealing Tennis Club',
+  'mutual': 'Mutual location — to be agreed',
+  'postal': 'Post',
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,7 +35,6 @@ export async function POST(req: NextRequest) {
 
     const { userId } = await auth()
 
-    // Look up internal user if signed in
     let internalUserId: string | undefined
     if (userId) {
       const user = await prisma.user.findUnique({ where: { clerkId: userId } })
@@ -44,22 +49,21 @@ export async function POST(req: NextRequest) {
         email: data.email,
         phone: data.phone ?? '',
         racketModel: data.racketModel,
-        currentString: data.currentString,
-        currentTension: data.currentTension,
+        stringName: data.stringName,
         desiredTension: data.desiredTension,
-        playingLevel: data.playingLevel,
         howOften: data.howOften,
         playGoals: data.playGoals ?? [],
         armIssues: data.armIssues ?? false,
         armIssuesDetail: data.armIssuesDetail,
-        deliveryMethod: data.deliveryMethod,
+        dropOffLocation: data.dropOffLocation,
         notes: data.notes,
         status: 'NEW',
         paymentStatus: 'UNPAID',
       },
     })
 
-    // Send confirmation email to customer
+    const dropOffLabel = DROP_OFF_LABELS[data.dropOffLocation] ?? data.dropOffLocation
+
     await resend.emails.send({
       from: FROM_EMAIL,
       to: data.email,
@@ -73,7 +77,7 @@ export async function POST(req: NextRequest) {
           <ul>
             <li><strong>Service:</strong> ${data.serviceType.replace(/-/g, ' ')}</li>
             <li><strong>Racket:</strong> ${data.racketModel ?? 'Not specified'}</li>
-            <li><strong>Delivery:</strong> ${data.deliveryMethod.replace(/-/g, ' ')}</li>
+            <li><strong>Drop-off:</strong> ${dropOffLabel}</li>
           </ul>
           <p>If you have any questions, reply to this email or contact us at <a href="mailto:hello@racketlogic.co.uk">hello@racketlogic.co.uk</a>.</p>
           <p style="color: #6b7280; font-size: 12px; margin-top: 24px;">RacketLogic — Smarter tennis setups, built around your game.</p>
@@ -81,7 +85,6 @@ export async function POST(req: NextRequest) {
       `,
     })
 
-    // Notify admin
     await resend.emails.send({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
@@ -95,14 +98,13 @@ export async function POST(req: NextRequest) {
             <li><strong>Phone:</strong> ${data.phone ?? '—'}</li>
             <li><strong>Service:</strong> ${data.serviceType}</li>
             <li><strong>Racket:</strong> ${data.racketModel ?? '—'}</li>
-            <li><strong>Current string:</strong> ${data.currentString ?? '—'}</li>
-            <li><strong>Current tension:</strong> ${data.currentTension ?? '—'}</li>
+            <li><strong>String:</strong> ${data.stringName ?? '—'}</li>
             <li><strong>Desired tension:</strong> ${data.desiredTension ?? '—'}</li>
-            <li><strong>Level:</strong> ${data.playingLevel ?? '—'}</li>
+            <li><strong>How often:</strong> ${data.howOften ?? '—'}</li>
             <li><strong>Goals:</strong> ${(data.playGoals ?? []).join(', ') || '—'}</li>
             <li><strong>Arm issues:</strong> ${data.armIssues ? 'Yes' : 'No'}</li>
             <li><strong>Arm detail:</strong> ${data.armIssuesDetail ?? '—'}</li>
-            <li><strong>Delivery:</strong> ${data.deliveryMethod}</li>
+            <li><strong>Drop-off:</strong> ${dropOffLabel}</li>
             <li><strong>Notes:</strong> ${data.notes ?? '—'}</li>
           </ul>
           <p><a href="${process.env.NEXT_PUBLIC_APP_URL}/admin/bookings/${booking.id}">View in admin →</a></p>

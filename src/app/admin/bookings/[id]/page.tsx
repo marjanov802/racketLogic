@@ -64,8 +64,7 @@ export default async function AdminBookingDetailPage({ params }: PageProps) {
           <dl className="space-y-2 text-sm">
             {[
               ['Service', booking.serviceType.replace(/-/g, ' ')],
-              ['Delivery', booking.deliveryMethod.replace(/-/g, ' ')],
-              ['Level', booking.playingLevel || '—'],
+              ['Drop-off', booking.dropOffLocation.replace(/-/g, ' ')],
               ['Plays', booking.howOften || '—'],
             ].map(([label, val]) => (
               <div key={label} className="flex gap-3">
@@ -81,8 +80,7 @@ export default async function AdminBookingDetailPage({ params }: PageProps) {
           <dl className="space-y-2 text-sm">
             {[
               ['Racket', booking.racketModel || '—'],
-              ['Current string', booking.currentString || '—'],
-              ['Current tension', booking.currentTension || '—'],
+              ['String', booking.stringName || '—'],
               ['Desired tension', booking.desiredTension || '—'],
             ].map(([label, val]) => (
               <div key={label} className="flex gap-3">

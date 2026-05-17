@@ -123,7 +123,9 @@ export default async function PlaybooksPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {freeSnapshots.map((snap, i) => (
               <AnimateIn key={snap.title} delay={(i + 1) as 1 | 2 | 3}>
-                <div className="h-full rounded-2xl border border-gray-100 bg-gray-50 overflow-hidden hover:border-lime-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col">
+                {/* Stretch-link pattern: invisible Link covers the card; playbook button sits above it with z-10 */}
+                <div className="relative h-full rounded-2xl border border-gray-100 bg-gray-50 overflow-hidden hover:border-lime-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col group">
+                  <Link href={snap.href} className="absolute inset-0 z-0" aria-label={`Read: ${snap.title}`} />
                   <div className="p-6 flex-1">
                     <h3 className="font-serif font-bold text-navy-900 text-lg mb-1">{snap.title}</h3>
                     <p className="text-xs text-gray-400 mb-4">{snap.summary}</p>
@@ -137,13 +139,13 @@ export default async function PlaybooksPage() {
                     </ul>
                   </div>
                   <div className="border-t border-gray-100 p-4 space-y-2 bg-white">
-                    <Link href={snap.href} className="flex items-center gap-1 text-xs font-medium text-lime-600 hover:text-lime-500 transition-colors">
+                    <span className="flex items-center gap-1 text-xs font-medium text-lime-600">
                       {snap.cta} <ArrowRight className="w-3 h-3" />
-                    </Link>
-                    <Link href={snap.playbookHref}>
-                      <div className="flex items-center justify-between p-3 rounded-xl border border-lime-200 bg-lime-50/50 hover:bg-lime-50 transition-colors group">
+                    </span>
+                    <Link href={snap.playbookHref} className="relative z-10 block">
+                      <div className="flex items-center justify-between p-3 rounded-xl border border-lime-200 bg-lime-50/50 hover:bg-lime-50 transition-colors">
                         <span className="text-xs font-semibold text-navy-900">{snap.playbookLabel}</span>
-                        <BookOpen className="w-3.5 h-3.5 text-lime-600 group-hover:scale-110 transition-transform" />
+                        <BookOpen className="w-3.5 h-3.5 text-lime-600" />
                       </div>
                     </Link>
                   </div>

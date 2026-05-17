@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Plus, Pencil, Clock } from 'lucide-react'
+import { DeleteButton } from '@/components/admin/DeleteButton'
 
 async function getArticles() {
   try { return await prisma.learnArticle.findMany({ orderBy: { createdAt: 'desc' } }) }
@@ -40,7 +41,12 @@ export default async function AdminArticlesPage() {
                   <td className="px-4 py-3"><Badge variant="gray">{a.category}</Badge></td>
                   <td className="px-4 py-3 text-gray-500">{a.readingTime ? `${a.readingTime} min` : '—'}</td>
                   <td className="px-4 py-3"><Badge variant={a.published ? 'green' : 'yellow'}>{a.published ? 'Published' : 'Draft'}</Badge></td>
-                  <td className="px-4 py-3"><Link href={`/admin/articles/${a.id}`} className="text-lime-600 hover:underline text-xs font-medium flex items-center gap-1"><Pencil className="w-3 h-3" />Edit</Link></td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <Link href={`/admin/articles/${a.id}`} className="text-lime-600 hover:underline text-xs font-medium flex items-center gap-1"><Pencil className="w-3 h-3" />Edit</Link>
+                      <DeleteButton endpoint={`/api/admin/articles/${a.id}`} label={a.title} />
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

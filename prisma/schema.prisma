@@ -61,15 +61,13 @@ model Booking {
   email           String
   phone           String
   racketModel     String?
-  currentString   String?
-  currentTension  String?
+  stringName      String?       // string the customer is bringing (labour-only) or preference
   desiredTension  String?
-  playingLevel    String?
   howOften        String?
-  playGoals       String[]      // power, spin, control, comfort, durability
+  playGoals       String[]
   armIssues       Boolean       @default(false)
   armIssuesDetail String?
-  deliveryMethod  String        // drop-off, collection, postal
+  dropOffLocation String        // home-ub5, west-middlesex, ealing, mutual, postal
   notes           String?
   status          BookingStatus @default(NEW)
   price           Decimal?      @db.Decimal(10, 2)
