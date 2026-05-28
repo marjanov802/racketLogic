@@ -19,7 +19,6 @@ const statusOptions = [
 
 const paymentOptions = [
   { value: 'UNPAID', label: 'Unpaid' },
-  { value: 'DEPOSIT_PAID', label: 'Deposit Paid' },
   { value: 'PAID', label: 'Paid' },
   { value: 'REFUNDED', label: 'Refunded' },
 ]

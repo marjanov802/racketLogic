@@ -82,7 +82,7 @@ export function StringingServices({ services }: Props) {
                       ? 'bg-lime-500 text-navy-950'
                       : 'text-lime-600 group-hover:text-lime-700'
                   }`}>
-                    {selectedService === service.id ? 'Selected — scroll down to book' : 'Click to select & book'}
+                    {selectedService === service.id ? 'Selected - scroll down to book' : 'Click to select & book'}
                   </div>
                 </div>
               </div>

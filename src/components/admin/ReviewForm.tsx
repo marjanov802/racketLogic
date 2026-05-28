@@ -11,6 +11,12 @@ import { Card } from '@/components/ui/Card'
 import { RichEditor } from './RichEditor'
 import { slugify } from '@/lib/utils'
 
+interface AffiliateLink {
+  retailer: string
+  price: string
+  url: string
+}
+
 interface ReviewData {
   id?: string
   title?: string
@@ -21,6 +27,8 @@ interface ReviewData {
   excerpt?: string
   content?: string
   affiliateUrl?: string
+  affiliateLinks?: AffiliateLink[]
+  coverImage?: string
   rating?: string
   whoIsItFor?: string
   whoIsItNotFor?: string
@@ -40,12 +48,36 @@ const categoryOptions = [
   { value: 'Comparisons', label: 'Comparisons' },
 ]
 
+function initialAffiliateLinks(review?: ReviewData): AffiliateLink[] {
+  if (Array.isArray(review?.affiliateLinks) && review.affiliateLinks.length > 0) {
+    return [
+      ...review.affiliateLinks,
+      ...Array.from({ length: Math.max(0, 3 - review.affiliateLinks.length) }, () => ({ retailer: '', price: '', url: '' })),
+    ].slice(0, 3)
+  }
+
+  if (review?.affiliateUrl) {
+    return [
+      { retailer: '', price: '', url: review.affiliateUrl },
+      { retailer: '', price: '', url: '' },
+      { retailer: '', price: '', url: '' },
+    ]
+  }
+
+  return [
+    { retailer: '', price: '', url: '' },
+    { retailer: '', price: '', url: '' },
+    { retailer: '', price: '', url: '' },
+  ]
+}
+
 export function ReviewForm({ review }: { review?: ReviewData }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState(review?.title ?? '')
   const [slug, setSlug] = useState(review?.slug ?? '')
   const [content, setContent] = useState(review?.content ?? '')
+  const [affiliateLinks, setAffiliateLinks] = useState<AffiliateLink[]>(initialAffiliateLinks(review))
 
   const isEdit = !!review?.id
 
@@ -54,11 +86,16 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
     if (!isEdit) setSlug(slugify(e.target.value))
   }
 
+  function updateAffiliateLink(index: number, field: keyof AffiliateLink, value: string) {
+    setAffiliateLinks((current) => current.map((link, i) => (i === index ? { ...link, [field]: value } : link)))
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
-    const form = e.currentTarget
-    const data = new FormData(form)
+    const data = new FormData(e.currentTarget)
+    const cleanAffiliateLinks = affiliateLinks.filter((link) => link.url.trim() || link.retailer.trim() || link.price.trim())
+    const firstAffiliateUrl = cleanAffiliateLinks.find((link) => link.url.trim())?.url ?? ''
     const payload = {
       title: data.get('title'),
       slug: data.get('slug'),
@@ -67,7 +104,9 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
       brand: data.get('brand'),
       excerpt: data.get('excerpt'),
       content,
-      affiliateUrl: data.get('affiliateUrl'),
+      affiliateUrl: firstAffiliateUrl,
+      affiliateLinks: cleanAffiliateLinks,
+      coverImage: data.get('coverImage'),
       rating: data.get('rating') ? parseInt(data.get('rating') as string) : null,
       whoIsItFor: data.get('whoIsItFor'),
       whoIsItNotFor: data.get('whoIsItNotFor'),
@@ -77,9 +116,14 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
       published: data.get('published') === 'true',
       featured: data.get('featured') === 'true',
     }
+
     try {
       const url = isEdit ? `/api/admin/reviews/${review!.id}` : '/api/admin/reviews'
-      const res = await fetch(url, { method: isEdit ? 'PATCH' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      const res = await fetch(url, {
+        method: isEdit ? 'PATCH' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
       if (!res.ok) throw new Error()
       toast.success(isEdit ? 'Review updated' : 'Review created')
       router.push('/admin/reviews')
@@ -102,9 +146,41 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
             <Input label="Brand" name="brand" required defaultValue={review?.brand} placeholder="e.g. Wilson" />
           </div>
           <Select label="Category" name="category" required options={categoryOptions} defaultValue={review?.category} placeholder="Select category" />
-          <Textarea label="Short excerpt" name="excerpt" required defaultValue={review?.excerpt} rows={2} placeholder="1–2 sentence summary shown in listings" />
-          <Input label="Affiliate URL (optional)" name="affiliateUrl" type="url" defaultValue={review?.affiliateUrl ?? ''} placeholder="https://..." />
-          <Input label="Rating (1–10)" name="rating" type="number" min={1} max={10} defaultValue={review?.rating} placeholder="e.g. 8" />
+          <Textarea label="Short excerpt" name="excerpt" required defaultValue={review?.excerpt} rows={2} placeholder="1-2 sentence summary shown in listings" />
+          <Input label="Cover image URL (optional)" name="coverImage" defaultValue={review?.coverImage ?? ''} placeholder="/images/reviews/example.jpg" />
+          <Input label="Rating (1-10, optional/internal)" name="rating" type="number" min={1} max={10} defaultValue={review?.rating} placeholder="e.g. 8" />
+        </div>
+      </Card>
+
+      <Card>
+        <h3 className="font-bold text-navy-900 mb-4">Affiliate Retailer Links</h3>
+        <p className="text-sm text-gray-500 mb-4">
+          Add up to three retailer links. Prices are shown as guide prices, so update them manually when needed.
+        </p>
+        <div className="space-y-4">
+          {affiliateLinks.map((link, index) => (
+            <div key={index} className="grid grid-cols-1 md:grid-cols-[1fr_120px_2fr] gap-3 rounded-xl border border-gray-100 bg-gray-50 p-4">
+              <Input
+                label={`Retailer ${index + 1}`}
+                value={link.retailer}
+                onChange={(e) => updateAffiliateLink(index, 'retailer', e.target.value)}
+                placeholder="e.g. Tennis Warehouse Europe"
+              />
+              <Input
+                label="Price"
+                value={link.price}
+                onChange={(e) => updateAffiliateLink(index, 'price', e.target.value)}
+                placeholder="e.g. GBP 189"
+              />
+              <Input
+                label="Affiliate URL"
+                type="url"
+                value={link.url}
+                onChange={(e) => updateAffiliateLink(index, 'url', e.target.value)}
+                placeholder="https://..."
+              />
+            </div>
+          ))}
         </div>
       </Card>
 
@@ -128,7 +204,7 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
         <h3 className="font-bold text-navy-900 mb-4">Settings</h3>
         <div className="grid grid-cols-2 gap-4">
           <Select label="Published" name="published" defaultValue={review?.published ? 'true' : 'false'} options={[{ value: 'false', label: 'Draft' }, { value: 'true', label: 'Published' }]} />
-          <Select label="Featured" name="featured" defaultValue={review?.featured ? 'true' : 'false'} options={[{ value: 'false', label: 'No' }, { value: 'true', label: 'Yes — show on homepage' }]} />
+          <Select label="Featured" name="featured" defaultValue={review?.featured ? 'true' : 'false'} options={[{ value: 'false', label: 'No' }, { value: 'true', label: 'Yes - show on homepage' }]} />
         </div>
       </Card>
 

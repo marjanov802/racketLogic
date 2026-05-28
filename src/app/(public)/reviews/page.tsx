@@ -7,12 +7,19 @@ import { Disclaimer } from '@/components/ui/Disclaimer'
 import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = {
-  title: 'Gear Reviews',
+  title: 'Blog & Gear Reviews',
   description:
-    'Honest tennis gear reviews. Rackets, strings, shoes, grips and accessories reviewed with clear verdicts.',
+    'Tennis gear reviews and practical buying advice. Rackets, strings, shoes, grips and accessories reviewed with clear verdicts.',
 }
 
 const categories = ['All', 'Rackets', 'Strings', 'Shoes', 'Grips', 'Accessories']
+
+const placeholderCategories = [
+  { name: 'Rackets', label: 'Frame reviews', desc: 'Control, power and player frames reviewed by setup and player type.' },
+  { name: 'Strings', label: 'String tests', desc: 'Poly, multifilament, synthetic gut and hybrid strings explained clearly.' },
+  { name: 'Shoes', label: 'Court footwear', desc: 'Hard court, clay and all-court shoes reviewed for movement and durability.' },
+  { name: 'Grips', label: 'Grip setup', desc: 'Overgrips and replacement grips reviewed for feel, sweat and sizing.' },
+]
 
 async function getReviews() {
   try {
@@ -45,26 +52,24 @@ export default async function ReviewsPage() {
 
   return (
     <>
-      {/* Hero */}
       <section className="bg-navy-gradient text-white py-20">
         <div className="container-lg">
           <Badge variant="lime" className="mb-5 text-xs font-semibold uppercase tracking-widest">
-            Gear Reviews
+            Blog & Reviews
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold mb-5 max-w-2xl">
-            Honest gear reviews.
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-5 max-w-2xl">
+            Honest tennis reviews with setup context.
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl leading-relaxed">
-            Rackets, strings, shoes, grips and accessories reviewed clearly and honestly.
-            Clear verdicts. No sponsored opinions. Affiliate links clearly marked.
+            Rackets, strings, shoes, grips and accessories reviewed through the lens of
+            real tennis setup: who it suits, what it changes, and what to do next.
           </p>
         </div>
       </section>
 
-      {/* Category filter */}
       <section className="py-6 border-b border-gray-100 bg-white sticky top-16 z-10">
         <div className="container-lg">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1">
             <Filter className="w-4 h-4 text-gray-400 flex-shrink-0" />
             {categories.map((cat) => (
               <Link
@@ -79,23 +84,16 @@ export default async function ReviewsPage() {
         </div>
       </section>
 
-      {/* Reviews grid */}
       <section className="section-padding">
         <div className="container-lg">
           {reviews.length === 0 ? (
             <div>
-              {/* Placeholder cards for categories */}
               <div className="mb-10">
                 <h2 className="text-xl font-bold text-navy-900 mb-6">Review categories</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {[
-                    { name: 'Rackets', emoji: '🎾', desc: 'Player, control, power and beginner rackets reviewed.' },
-                    { name: 'Strings', emoji: '🪡', desc: 'Poly, multifilament, synthetic gut and hybrid string reviews.' },
-                    { name: 'Shoes', emoji: '👟', desc: 'Hard court, clay and all-court shoes reviewed for different playing styles.' },
-                    { name: 'Grips', emoji: '🖐️', desc: 'Overgrips and replacement grips reviewed for different hand types.' },
-                  ].map((cat) => (
+                  {placeholderCategories.map((cat) => (
                     <Card key={cat.name} className="text-center">
-                      <div className="text-4xl mb-3">{cat.emoji}</div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-3">{cat.label}</p>
                       <h3 className="font-bold text-navy-900 mb-2">{cat.name}</h3>
                       <p className="text-sm text-gray-600">{cat.desc}</p>
                       <Badge variant="gray" className="mt-3">Reviews coming soon</Badge>
@@ -122,11 +120,11 @@ export default async function ReviewsPage() {
                       <img
                         src={review.coverImage}
                         alt={review.productName}
-                        className="w-full aspect-video object-cover rounded-xl mb-4"
+                        className="w-full aspect-video object-contain bg-white rounded-xl mb-4 border border-gray-100"
                       />
                     ) : (
-                      <div className="aspect-video bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-3xl">
-                        {review.category === 'Rackets' ? '🎾' : review.category === 'Strings' ? '🪡' : review.category === 'Shoes' ? '👟' : '🖐️'}
+                      <div className="aspect-video bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                        {review.category}
                       </div>
                     )}
                     <div className="flex items-center gap-2 mb-3">

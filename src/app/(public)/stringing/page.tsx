@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Zap, Check } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
@@ -6,15 +6,15 @@ import { Disclaimer } from '@/components/ui/Disclaimer'
 import { StringingServices } from '@/components/stringing/StringingServices'
 
 export const metadata: Metadata = {
-  title: 'Racket Stringing',
-  description: 'Professional tennis racket stringing with string and tension advice. Labour-only, full service, hybrid and Sereggtti stringing.',
+  title: 'Central London Racket Stringing',
+  description: 'Tennis racket stringing with Central London pickup and drop-off around London Bridge, Bank and Blackfriars on Tuesday, Wednesday and Thursday.',
 }
 
 const services = [
   {
     id: 'labour-only',
     name: 'Labour-Only Restring',
-    price: '£18',
+    price: 'GBP 20',
     priceNote: 'Your string',
     badge: null,
     description: 'For players who already have their own string and know what tension they want. Bring your string, we do the rest.',
@@ -28,7 +28,7 @@ const services = [
   {
     id: 'we-provide-string',
     name: 'We Provide The String',
-    price: 'From £28',
+    price: 'From GBP 30',
     priceNote: 'String included',
     badge: null,
     description: 'We select and provide a suitable string for your racket and game. Variable pricing depending on string chosen.',
@@ -42,10 +42,10 @@ const services = [
   {
     id: 'we-provide-hybrid',
     name: 'We Provide Hybrid Stringing',
-    price: 'From £45',
+    price: 'From GBP 45',
     priceNote: 'Both strings included',
     badge: 'Popular',
-    description: 'Two different strings in one racket — mains and crosses. We provide and recommend both. Variable pricing based on strings chosen.',
+    description: 'Two different strings in one racket - mains and crosses. We provide and recommend both. Variable pricing based on strings chosen.',
     includes: [
       'Two strings selected and provided by RacketLogic',
       'Mains and crosses recommendation',
@@ -56,8 +56,8 @@ const services = [
   },
   {
     id: 'sereggtti-labour',
-    name: 'Sereggtti — Labour Only',
-    price: 'From £22',
+    name: 'Sereggtti - Labour Only',
+    price: 'GBP 30',
     priceNote: 'Your string',
     badge: 'Specialist',
     description: 'Sereggtti is a specialist map-type stringing pattern that changes how strings interact across the bed. Bring your own string.',
@@ -71,14 +71,16 @@ const services = [
   },
   {
     id: 'sereggtti-with-strings',
-    name: 'Sereggtti — With Strings',
-    price: 'From £38',
-    priceNote: 'String included',
+    name: 'Sereggtti - With Strings',
+    price: 'From GBP 40',
+    priceNote: 'Single or hybrid',
     badge: 'Signature',
-    description: 'The full Sereggtti experience — specialist pattern with string provided by RacketLogic. Priced higher due to additional time required.',
+    description: 'Specialist Sereggtti pattern with strings provided by RacketLogic. Price depends on whether you choose a single-string or hybrid setup.',
     includes: [
       'Specialist Sereggtti stringing pattern',
       'String selected and provided by RacketLogic',
+      'Single-string setup from GBP 40',
+      'Hybrid setup from GBP 55',
       'Tension recommendation',
       'Full racket condition check',
       'Written setup notes',
@@ -94,10 +96,22 @@ const addOns = [
   { label: 'Logo stencil application', free: false, note: 'Small fee' },
 ]
 
-const deliveryOptions = [
-  { title: 'Drop-off', description: 'Bring your racket to an agreed location in England.', icon: '📍' },
-  { title: 'Collection', description: 'We collect from your location (area-dependent, contact first).', icon: '🚗' },
-  { title: 'Postal', description: 'Send your racket securely by post. Return shipping included in price.', icon: '📦' },
+const handoverOptions = [
+  {
+    title: 'Central London pickup/drop-off',
+    description: 'London Bridge, Bank, Blackfriars and nearby areas on Tuesday, Wednesday and Thursday.',
+    tag: 'Main service',
+  },
+  {
+    title: 'Northolt UB5 home drop-off',
+    description: 'Best for fastest turnaround. 24-hour service is available when dropped off and collected from UB5.',
+    tag: '24hr available',
+  },
+  {
+    title: 'Club and area requests',
+    description: 'Request Ealing, Northwood, Acton, Ruislip, Eastcote, West London or North West London. We reply within 4 daytime hours to confirm if it works.',
+    tag: 'Request first',
+  },
 ]
 
 const stringBreakdown = [
@@ -113,10 +127,10 @@ const stringBreakdown = [
   {
     title: 'String types',
     points: [
-      'Polyester — durable, good spin, firmer feel',
-      'Multifilament — arm-friendly, softer, more comfort',
-      'Natural gut — premium feel, best power and tension hold',
-      'Synthetic gut — all-round, budget-friendly',
+      'Polyester - durable, good spin, firmer feel',
+      'Multifilament - arm-friendly, softer, more comfort',
+      'Natural gut - premium feel, best power and tension hold',
+      'Synthetic gut - all-round, budget-friendly',
     ],
   },
   {
@@ -150,13 +164,13 @@ export default function StringingPage() {
         <div className="container-lg relative">
           <div className="flex items-center gap-3 mb-6">
             <div className="h-px w-8 bg-lime-400/60" />
-            <span className="text-xs tracking-[0.3em] text-lime-400/80 uppercase font-medium">Professional Stringing Service</span>
+            <span className="text-xs tracking-[0.3em] text-lime-400/80 uppercase font-medium">Central London Stringing Service</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-serif font-bold mb-5 max-w-2xl leading-tight">
-            RacketLogic Stringing
+            Central London Racket Stringing
           </h1>
           <p className="text-xl text-gray-400 max-w-xl leading-relaxed mb-8 font-light">
-            Professional racket stringing with practical string and tension advice. Every restring includes a basic racket check — not just a string job.
+            Professional racket stringing with pickup and drop-off around London Bridge, Bank and Blackfriars on Tuesday, Wednesday and Thursday.
           </p>
           <div className="flex flex-wrap gap-4">
             <a href="#book">
@@ -218,7 +232,7 @@ export default function StringingPage() {
         </div>
       </section>
 
-      {/* Services + Booking form (client component handles click → select) */}
+      {/* Services + Booking form (client component handles click -> select) */}
       <StringingServices services={services} />
 
       {/* Add-ons */}
@@ -250,15 +264,19 @@ export default function StringingPage() {
         </div>
       </section>
 
-      {/* Delivery Options */}
+      {/* Pickup and drop-off */}
       <section className="section-padding-sm bg-gray-50">
         <div className="container-lg">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl font-serif font-bold text-navy-900 mb-6">Drop-off, collection &amp; postal</h2>
+            <h2 className="text-2xl font-serif font-bold text-navy-900 mb-3">Pickup and drop-off</h2>
+            <p className="text-gray-500 mb-6">
+              Our main service advantage is convenient Central London handover: London Bridge, Bank,
+              Blackfriars and nearby areas on Tuesday, Wednesday and Thursday.
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {deliveryOptions.map((opt) => (
+              {handoverOptions.map((opt) => (
                 <div key={opt.title} className="rounded-2xl border border-gray-100 bg-white p-6 text-center hover:border-lime-200 transition-colors">
-                  <div className="text-3xl mb-3">{opt.icon}</div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-3">{opt.tag}</div>
                   <h3 className="font-serif font-bold text-navy-900 mb-2">{opt.title}</h3>
                   <p className="text-sm text-gray-500">{opt.description}</p>
                 </div>
@@ -277,3 +295,4 @@ export default function StringingPage() {
     </>
   )
 }
+

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { AnimateIn } from '@/components/ui/AnimateIn'
@@ -16,23 +16,16 @@ import {
   ChevronRight,
 } from 'lucide-react'
 
-// ─── Data ────────────────────────────────────────────────────────────────────
+// Data
 
 const services = [
   {
-    icon: Zap,
-    title: 'Racket Stringing',
-    description: 'Professional stringing with practical string and tension advice. Labour-only, full service, hybrid and Sereggtti stringing.',
-    href: '/stringing',
-    cta: 'Book Stringing',
-    highlight: true,
-  },
-  {
     icon: BookOpen,
-    title: 'Playbooks',
-    description: 'Paid PDF guides on strings, rackets, shoes, tactics, warm-ups and nutrition. Buy exactly what you need.',
-    href: '/playbooks',
-    cta: 'View Playbooks',
+    title: 'Free Articles',
+    description: 'Free guides on string tension, racket specs, shoe choice, warm-ups and more. No account needed.',
+    href: '/learn',
+    cta: 'Start Reading',
+    highlight: true,
   },
   {
     icon: Star,
@@ -43,10 +36,17 @@ const services = [
   },
   {
     icon: BookOpen,
-    title: 'Free Articles',
-    description: 'Free guides on string tension, racket specs, shoe choice, warm-ups and more. No account needed.',
-    href: '/learn',
-    cta: 'Read Free Guides',
+    title: 'Playbooks',
+    description: 'Paid PDF guides on strings, rackets, shoes, tactics, warm-ups and nutrition. Buy exactly what you need.',
+    href: '/playbooks',
+    cta: 'View Playbooks',
+  },
+  {
+    icon: Zap,
+    title: 'Central London Stringing',
+    description: 'Pickup and drop-off around London Bridge, Bank and Blackfriars on Tuesday, Wednesday and Thursday. Practical setup advice included.',
+    href: '/stringing',
+    cta: 'Book London Handover',
   },
   {
     icon: Users,
@@ -58,26 +58,26 @@ const services = [
 ]
 
 const howItWorks = [
-  { step: '01', title: 'Choose what you need help with', description: 'Stringing? Better gear? More structure in training? Start with the area that matters most to your game.' },
-  { step: '02', title: 'Read a guide, book stringing or explore reviews', description: 'Get clear, practical information without wading through generic advice or sales pitches.' },
-  { step: '03', title: 'Improve your setup, training or equipment decisions', description: 'Stop guessing. Make changes based on what actually suits your game and playing style.' },
-  { step: '04', title: 'Come back for restringing, new guides and future support', description: 'RacketLogic grows with you. Restring when needed, access new playbooks, and explore custom support.' },
+  { step: '01', title: 'Start with the free articles', description: 'No account needed. Read guides on strings, rackets, shoes, warm-ups and tactics - wherever you are in your game.' },
+  { step: '02', title: 'Go deeper with a playbook', description: 'When a free article leaves you wanting more, the playbook covers the full picture with recommendations and decision frameworks.' },
+  { step: '03', title: 'Read reviews before you buy', description: 'Honest verdicts on rackets, strings and shoes before spending money on kit that might not suit your game.' },
+  { step: '04', title: 'Use the Central London handover', description: 'Once you know what strings and tension suit your game, hand over your racket around London Bridge, Bank or Blackfriars on Tuesday, Wednesday or Thursday.' },
 ]
 
 const featuredPlaybooks = [
-  { title: 'String Setup Playbook', description: 'Poly vs multifilament, tension explained, strings for spin, control and comfort.', price: '£7.99', category: 'Equipment', href: '/playbooks/string-setup' },
-  { title: 'Racket Buying Playbook', description: 'Head size, weight, balance, swingweight and string pattern explained clearly.', price: '£9.99', category: 'Equipment', href: '/playbooks/racket-buying' },
-  { title: 'Match Tactics Playbook', description: 'Singles and doubles tactics, serve patterns, return tactics and tie-break strategy.', price: '£9.99', category: 'Matchplay', href: '/playbooks/match-tactics' },
+  { title: 'String Setup Playbook', description: 'Poly vs multifilament, tension explained, strings for spin, control and comfort.', price: 'GBP 7.99', category: 'Equipment', href: '/playbooks/string-setup' },
+  { title: 'Racket Buying Playbook', description: 'Head size, weight, balance, swingweight and string pattern explained clearly.', price: 'GBP 9.99', category: 'Equipment', href: '/playbooks/racket-buying' },
+  { title: 'Match Tactics Playbook', description: 'Singles and doubles tactics, serve patterns, return tactics and tie-break strategy.', price: 'GBP 9.99', category: 'Matchplay', href: '/playbooks/match-tactics' },
 ]
 
 const trustPoints = [
   { icon: ShieldCheck, title: 'No generic opinions', description: 'Every recommendation is practical and based on real tennis experience, not marketing.' },
-  { icon: Target, title: 'Built around your game', description: 'Setup advice is specific to your style, level and goals — not one-size-fits-all.' },
+  { icon: Target, title: 'Built around your game', description: 'Setup advice is specific to your style, level and goals - not one-size-fits-all.' },
   { icon: TrendingUp, title: 'Honest and transparent', description: 'Where affiliate links exist, they are clearly marked. We only recommend what works.' },
   { icon: BookOpen, title: 'Practical first', description: 'Guides focus on what to actually do, not endless theory. Actionable from the first page.' },
 ]
 
-// ─── Sections ────────────────────────────────────────────────────────────────
+// Sections
 
 function Hero() {
   return (
@@ -97,37 +97,37 @@ function Hero() {
           {/* Eyebrow */}
           <div className="flex items-center gap-3 mb-8">
             <div className="h-px w-8 bg-lime-400/60" />
-            <span className="text-xs tracking-[0.3em] text-lime-400/80 uppercase font-medium">Tennis Setup & Training Platform</span>
+            <span className="text-xs tracking-[0.3em] text-lime-400/80 uppercase font-medium">Tennis knowledge + Central London stringing</span>
           </div>
 
           {/* Headline */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-[1.05] tracking-tight mb-8">
-            Precision stringing.{' '}
-            <span className="text-gradient italic">Elite performance.</span>
+            Learn your setup.{' '}
+            <span className="text-gradient italic">String it in London.</span>
           </h1>
 
           <p className="text-lg md:text-xl text-gray-400 leading-relaxed mb-10 max-w-xl font-light">
-            Professional racket stringing, setup guides, training playbooks and honest gear reviews — built for players who take their game seriously.
+            RacketLogic helps players understand strings, rackets and gear, then makes restringing easy with pickup and drop-off around London Bridge, Bank and Blackfriars on Tuesday, Wednesday and Thursday.
           </p>
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-4 mb-16">
-            <Link href="/stringing">
+            <Link href="/learn">
               <button className="group inline-flex items-center gap-2 px-8 py-3.5 bg-lime-500 text-navy-950 font-semibold rounded hover:bg-lime-400 transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,174,85,0.4)] text-sm tracking-wide">
-                Book Stringing
+                Start Reading Free
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
-            <Link href="/playbooks">
+            <Link href="/stringing">
               <button className="inline-flex items-center gap-2 px-8 py-3.5 border border-white/20 text-white font-medium rounded hover:border-lime-400/50 hover:text-lime-300 transition-all duration-300 text-sm tracking-wide">
-                Browse Playbooks
+                Central London Stringing
               </button>
             </Link>
           </div>
 
           {/* Social proof */}
           <div className="flex items-center gap-6 border-t border-white/5 pt-8">
-            {[['Stringing', 'Professional service'], ['Playbooks', 'Practical PDF guides'], ['Reviews', 'Honest verdicts']].map(([label, sub]) => (
+            {[['Free Articles', 'No account needed'], ['Playbooks', 'Practical PDF guides'], ['London Handover', 'Tue-Thu central pickup']].map(([label, sub]) => (
               <div key={label} className="text-center">
                 <div className="text-sm font-semibold text-lime-300">{label}</div>
                 <div className="text-xs text-gray-500 mt-0.5">{sub}</div>
@@ -143,6 +143,52 @@ function Hero() {
   )
 }
 
+function LondonHandover() {
+  return (
+    <section className="-mt-10 relative z-20">
+      <div className="container-lg">
+        <AnimateIn>
+          <div className="rounded-3xl border border-lime-500/20 bg-white shadow-2xl shadow-navy-950/10 overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_2fr]">
+              <div className="bg-navy-950 p-8 md:p-10 text-white">
+                <div className="text-xs tracking-[0.28em] uppercase text-lime-400/80 mb-4">
+                  Main stringing advantage
+                </div>
+                <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight">
+                  Central London racket handover.
+                </h2>
+                <p className="mt-4 text-sm text-gray-400 leading-relaxed">
+                  Learn what setup you need, then make the restring simple with pickup and drop-off where London players actually move through.
+                </p>
+              </div>
+              <div className="p-8 md:p-10">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-7">
+                  {[
+                    ['Areas', 'London Bridge, Bank, Blackfriars + nearby'],
+                    ['Days', 'Tuesday, Wednesday, Thursday'],
+                    ['Payment', 'Online, card or cash accepted'],
+                  ].map(([label, value]) => (
+                    <div key={label} className="rounded-2xl bg-gray-50 border border-gray-100 p-5">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-2">{label}</div>
+                      <div className="text-sm font-semibold text-navy-900 leading-snug">{value}</div>
+                    </div>
+                  ))}
+                </div>
+                <Link href="/stringing#book">
+                  <button className="group inline-flex items-center gap-2 px-6 py-3 bg-lime-500 text-navy-950 font-semibold rounded hover:bg-lime-400 transition-all duration-300 text-sm tracking-wide">
+                    Book Central London handover
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </AnimateIn>
+      </div>
+    </section>
+  )
+}
+
 function WhatWeDo() {
   return (
     <section className="section-padding bg-white">
@@ -154,10 +200,10 @@ function WhatWeDo() {
             <div className="h-px w-8 bg-lime-500/50" />
           </div>
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy-900 mb-5">
-            Two things. Done properly.
+            Understand first. Improve after.
           </h2>
           <p className="text-gray-500 text-lg leading-relaxed">
-            RacketLogic focuses on what actually improves your tennis — your equipment setup, and your training structure.
+            Most tennis players guess. Wrong strings, wrong tension, no training structure. RacketLogic gives you the knowledge to stop guessing - and the stringing service to put it into practice.
           </p>
         </AnimateIn>
 
@@ -166,14 +212,14 @@ function WhatWeDo() {
             <div className="group relative bg-navy-950 rounded-2xl p-8 overflow-hidden border border-white/5 hover:border-lime-500/20 transition-all duration-500 glow-champagne-hover">
               <div className="absolute top-0 right-0 w-40 h-40 bg-lime-500/5 rounded-full blur-3xl group-hover:bg-lime-500/10 transition-all duration-700" />
               <div className="w-12 h-12 border border-lime-500/30 rounded flex items-center justify-center mb-6 group-hover:border-lime-400/60 transition-colors">
-                <Zap className="w-5 h-5 text-lime-400" />
+                <BookOpen className="w-5 h-5 text-lime-400" />
               </div>
-              <h3 className="font-serif text-xl font-bold text-white mb-3">Racket & Equipment Setup</h3>
+              <h3 className="font-serif text-xl font-bold text-white mb-3">Tennis Knowledge</h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-5">
-                Most players use the wrong strings, tension, or racket for their game. RacketLogic helps you understand what actually suits your style — and does the stringing too.
+                Free articles, honest gear reviews and in-depth playbooks on strings, rackets, shoes, warm-ups, tactics and nutrition. The information every club player needs, written clearly.
               </p>
               <ul className="space-y-2">
-                {['String and tension advice', 'Racket setup guidance', 'Honest gear reviews', 'Professional stringing'].map((item) => (
+                {['Free articles - no account needed', 'Honest gear reviews', 'Practical PDF playbooks', 'String, racket and shoe guides'].map((item) => (
                   <li key={item} className="flex items-center gap-2.5 text-sm text-gray-300">
                     <Check className="w-3.5 h-3.5 text-lime-400 flex-shrink-0" />
                     {item}
@@ -187,14 +233,14 @@ function WhatWeDo() {
             <div className="group relative bg-navy-950 rounded-2xl p-8 overflow-hidden border border-white/5 hover:border-lime-500/20 transition-all duration-500 glow-champagne-hover">
               <div className="absolute top-0 right-0 w-40 h-40 bg-navy-300/5 rounded-full blur-3xl group-hover:bg-navy-300/10 transition-all duration-700" />
               <div className="w-12 h-12 border border-lime-500/30 rounded flex items-center justify-center mb-6 group-hover:border-lime-400/60 transition-colors">
-                <Dumbbell className="w-5 h-5 text-lime-400" />
+                <Zap className="w-5 h-5 text-lime-400" />
               </div>
-              <h3 className="font-serif text-xl font-bold text-white mb-3">Training & Preparation</h3>
+              <h3 className="font-serif text-xl font-bold text-white mb-3">Racket Stringing</h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-5">
-                Many players train without structure. No warm-up, no drill plan, no match preparation. RacketLogic gives you practical guides to make every session count.
+                Once you know what strings and tension suit your game, we do the stringing. Central London pickup/drop-off is available around London Bridge, Bank and Blackfriars on Tuesday, Wednesday and Thursday.
               </p>
               <ul className="space-y-2">
-                {['Warm-up and cool-down playbooks', 'Match tactics guides', 'Free session structure articles', 'Custom programmes by enquiry'].map((item) => (
+                {['London Bridge, Bank and Blackfriars', 'Tuesday to Thursday handover', 'Cash, card or online payment', 'UB5 and club options also available'].map((item) => (
                   <li key={item} className="flex items-center gap-2.5 text-sm text-gray-300">
                     <Check className="w-3.5 h-3.5 text-lime-400 flex-shrink-0" />
                     {item}
@@ -219,8 +265,8 @@ function Services() {
             <span className="text-xs tracking-[0.3em] text-lime-600 uppercase font-medium">Services</span>
             <div className="h-px w-8 bg-lime-500/50" />
           </div>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy-900 mb-4">Everything we offer</h2>
-          <p className="text-gray-500 text-lg max-w-xl mx-auto">Help you play better tennis, whether that's stringing, guides, or reviews.</p>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy-900 mb-4">Everything in one place</h2>
+          <p className="text-gray-500 text-lg max-w-xl mx-auto">Free knowledge first. Paid guides, reviews and stringing when you're ready to go deeper.</p>
         </AnimateIn>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -396,16 +442,16 @@ function FinalCTA() {
                 <div className="h-px w-8 bg-lime-400/40" />
               </div>
               <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-5 max-w-2xl mx-auto leading-tight">
-                Better setup. Better practice.{' '}
-                <span className="text-gradient italic">Better tennis.</span>
+                Read. Learn. Play{' '}
+                <span className="text-gradient italic">smarter.</span>
               </h2>
               <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-                Start with a stringing booking, a playbook, or a gear review. Stop guessing with your equipment and training.
+                Start with a free article, go deeper with a playbook, or book a restring when you know exactly what you need.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
-                <Link href="/stringing">
+                <Link href="/learn">
                   <button className="group inline-flex items-center gap-2 px-8 py-3.5 bg-lime-500 text-navy-950 font-semibold rounded hover:bg-lime-400 transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,174,85,0.35)] text-sm tracking-wide">
-                    Book Stringing
+                    Start Reading Free
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </Link>
@@ -414,9 +460,9 @@ function FinalCTA() {
                     Browse Playbooks
                   </button>
                 </Link>
-                <Link href="/reviews">
+                <Link href="/stringing">
                   <button className="inline-flex items-center gap-2 px-8 py-3.5 text-gray-500 font-medium hover:text-gray-300 transition-colors text-sm">
-                    Read Reviews
+                    Central London Stringing
                   </button>
                 </Link>
               </div>
@@ -428,12 +474,13 @@ function FinalCTA() {
   )
 }
 
-// ─── Page ────────────────────────────────────────────────────────────────────
+// Page
 
 export default function HomePage() {
   return (
     <>
       <Hero />
+      <LondonHandover />
       <WhatWeDo />
       <Services />
       <HowItWorks />
@@ -443,3 +490,4 @@ export default function HomePage() {
     </>
   )
 }
+

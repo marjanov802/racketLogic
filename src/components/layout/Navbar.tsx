@@ -8,10 +8,10 @@ import { cn } from '@/lib/utils'
 import { Menu, X } from 'lucide-react'
 
 const navLinks = [
-  { href: '/stringing', label: 'Stringing' },
-  { href: '/playbooks', label: 'Playbooks' },
   { href: '/learn', label: 'Learn' },
   { href: '/reviews', label: 'Blog' },
+  { href: '/playbooks', label: 'Playbooks' },
+  { href: '/stringing', label: 'Stringing' },
   { href: '/about', label: 'About' },
 ]
 
@@ -73,9 +73,9 @@ export function Navbar() {
 
           {/* CTA + Auth */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link href="/stringing">
+            <Link href="/stringing#book">
               <button className="px-5 py-2 text-sm font-semibold bg-lime-500 text-navy-950 rounded hover:bg-lime-400 active:bg-lime-600 transition-all duration-200 hover:shadow-[0_0_20px_rgba(212,174,85,0.4)] tracking-wide">
-                Book Stringing
+                Central London Stringing
               </button>
             </Link>
             <SignedIn>
@@ -126,8 +126,13 @@ export function Navbar() {
             </Link>
           ))}
           <div className="mt-3 pt-3 border-t border-white/5 flex flex-col gap-2">
-            <Link href="/stringing" onClick={() => setOpen(false)}>
+            <Link href="/stringing#book" onClick={() => setOpen(false)}>
               <button className="w-full py-2.5 text-sm font-semibold bg-lime-500 text-navy-950 rounded hover:bg-lime-400 transition-colors">
+                Central London Stringing
+              </button>
+            </Link>
+            <Link href="/stringing" onClick={() => setOpen(false)}>
+              <button className="w-full py-2.5 text-sm font-medium text-gray-300 hover:text-white transition-colors border border-white/10 rounded">
                 Book Stringing
               </button>
             </Link>

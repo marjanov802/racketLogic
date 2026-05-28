@@ -6,7 +6,7 @@ export type BookingStatus =
   | 'COMPLETED'
   | 'CANCELLED'
 
-export type PaymentStatus = 'UNPAID' | 'DEPOSIT_PAID' | 'PAID' | 'REFUNDED'
+export type PaymentStatus = 'UNPAID' | 'PAID' | 'REFUNDED'
 
 export type EnquiryStatus = 'NEW' | 'REVIEWING' | 'RESPONDED' | 'CLOSED'
 

@@ -18,6 +18,8 @@ export async function POST(req: NextRequest) {
         title: body.title, slug: body.slug ?? slugify(body.title),
         category: body.category, productName: body.productName, brand: body.brand,
         excerpt: body.excerpt, content: body.content, affiliateUrl: body.affiliateUrl,
+        affiliateLinks: body.affiliateLinks,
+        coverImage: body.coverImage,
         rating: body.rating, whoIsItFor: body.whoIsItFor, whoIsItNotFor: body.whoIsItNotFor,
         mainBenefit: body.mainBenefit, mainDownside: body.mainDownside, verdict: body.verdict,
         published: body.published ?? false, featured: body.featured ?? false,

@@ -16,7 +16,7 @@ const PLACEHOLDER_ARTICLES = [
   { title: 'Poly vs multifilament strings', slug: 'poly-vs-multifilament', category: 'Equipment', excerpt: 'The key differences between polyester and multifilament strings and which suits your playing style.', readingTime: 6 },
   { title: 'How often should you restring?', slug: 'how-often-to-restring', category: 'Equipment', excerpt: 'A simple guide to knowing when to restring based on how often you play and what string you use.', readingTime: 4 },
   { title: 'How to choose tennis shoes', slug: 'how-to-choose-tennis-shoes', category: 'Equipment', excerpt: 'Hard court, clay or all-court? What to look for in tennis shoes and what actually matters.', readingTime: 5 },
-  { title: 'Racket specs explained', slug: 'racket-specs-explained', category: 'Equipment', excerpt: 'Head size, weight, balance, swingweight and string pattern — what they mean and why they matter.', readingTime: 7 },
+  { title: 'Racket specs explained', slug: 'racket-specs-explained', category: 'Equipment', excerpt: 'Head size, weight, balance, swingweight and string pattern - what they mean and why they matter.', readingTime: 7 },
   { title: 'Grip size explained', slug: 'grip-size-explained', category: 'Equipment', excerpt: 'How to find your correct grip size and what happens when you get it wrong.', readingTime: 4 },
   { title: 'Basic tennis warm-up', slug: 'basic-tennis-warm-up', category: 'Training', excerpt: 'A 10-minute warm-up routine that prepares your body properly for tennis.', readingTime: 5 },
   { title: 'Cool-down basics for tennis', slug: 'cool-down-basics', category: 'Training', excerpt: 'Why a cool-down matters and how to do a simple post-tennis routine to recover better.', readingTime: 4 },
@@ -124,7 +124,7 @@ export default async function LearnPage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h3 className="text-xl font-bold text-navy-900 mb-2">Want more depth?</h3>
-              <p className="text-gray-600">Full playbooks go further — with complete guides, exercises and recommendations.</p>
+              <p className="text-gray-600">Full playbooks go further - with complete guides, exercises and recommendations.</p>
             </div>
             <Link href="/playbooks">
               <Badge variant="lime" className="cursor-pointer hover:bg-lime-200 transition-colors text-sm py-2 px-5">

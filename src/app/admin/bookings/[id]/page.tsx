@@ -23,8 +23,12 @@ export default async function AdminBookingDetailPage({ params }: PageProps) {
   if (!booking) notFound()
 
   const statusColors: Record<string, 'default' | 'lime' | 'navy' | 'green' | 'red' | 'yellow' | 'gray'> = {
-    NEW: 'yellow', CONFIRMED: 'navy', IN_PROGRESS: 'lime',
-    READY_FOR_COLLECTION: 'green', COMPLETED: 'default', CANCELLED: 'red',
+    NEW: 'yellow',
+    CONFIRMED: 'navy',
+    IN_PROGRESS: 'lime',
+    READY_FOR_COLLECTION: 'green',
+    COMPLETED: 'default',
+    CANCELLED: 'red',
   }
 
   return (
@@ -49,7 +53,7 @@ export default async function AdminBookingDetailPage({ params }: PageProps) {
             {[
               ['Name', booking.customerName],
               ['Email', booking.email],
-              ['Phone', booking.phone || '—'],
+              ['Phone', booking.phone || '-'],
             ].map(([label, val]) => (
               <div key={label} className="flex gap-3">
                 <dt className="text-gray-500 w-20 flex-shrink-0">{label}</dt>
@@ -64,11 +68,12 @@ export default async function AdminBookingDetailPage({ params }: PageProps) {
           <dl className="space-y-2 text-sm">
             {[
               ['Service', booking.serviceType.replace(/-/g, ' ')],
-              ['Drop-off', booking.dropOffLocation.replace(/-/g, ' ')],
-              ['Plays', booking.howOften || '—'],
+              ['Pickup/drop-off', booking.dropOffLocation.replace(/-/g, ' ')],
+              ['Payment', booking.paymentPreference ? booking.paymentPreference.replace(/-/g, ' ') : '-'],
+              ['Plays', booking.howOften || '-'],
             ].map(([label, val]) => (
               <div key={label} className="flex gap-3">
-                <dt className="text-gray-500 w-20 flex-shrink-0">{label}</dt>
+                <dt className="text-gray-500 w-28 flex-shrink-0">{label}</dt>
                 <dd className="text-navy-900 font-medium capitalize">{val}</dd>
               </div>
             ))}
@@ -79,9 +84,9 @@ export default async function AdminBookingDetailPage({ params }: PageProps) {
           <h3 className="font-bold text-navy-900 mb-4">Racket Details</h3>
           <dl className="space-y-2 text-sm">
             {[
-              ['Racket', booking.racketModel || '—'],
-              ['String', booking.stringName || '—'],
-              ['Desired tension', booking.desiredTension || '—'],
+              ['Racket', booking.racketModel || '-'],
+              ['String', booking.stringName || '-'],
+              ['Desired tension', booking.desiredTension || '-'],
             ].map(([label, val]) => (
               <div key={label} className="flex gap-3">
                 <dt className="text-gray-500 w-32 flex-shrink-0">{label}</dt>
@@ -114,7 +119,6 @@ export default async function AdminBookingDetailPage({ params }: PageProps) {
         </Card>
       )}
 
-      {/* Status update form */}
       <BookingStatusForm
         bookingId={booking.id}
         currentStatus={booking.status}

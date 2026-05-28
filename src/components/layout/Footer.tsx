@@ -1,15 +1,15 @@
-import Link from 'next/link'
-import { Zap, Mail } from 'lucide-react'
+﻿import Link from 'next/link'
+import { BookOpen, Mail } from 'lucide-react'
 
 const footerLinks = {
-  Services: [
-    { href: '/stringing', label: 'Racket Stringing' },
+  Knowledge: [
+    { href: '/learn', label: 'Free Articles' },
+    { href: '/reviews', label: 'Blog & Reviews' },
     { href: '/playbooks', label: 'Playbooks' },
-    { href: '/custom-programmes', label: 'Custom Programmes' },
   ],
-  Explore: [
-    { href: '/learn', label: 'Learn' },
-    { href: '/reviews', label: 'Blog' },
+  Services: [
+    { href: '/stringing', label: 'Central London Stringing' },
+    { href: '/custom-programmes', label: 'Custom Programmes' },
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },
   ],
@@ -28,14 +28,14 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-navy-800 border border-navy-700 rounded-lg flex items-center justify-center">
-                <Zap className="w-4 h-4 text-lime-400" />
+                <BookOpen className="w-4 h-4 text-lime-400" />
               </div>
               <span className="text-lg font-bold text-white tracking-tight">
                 Racket<span className="text-lime-400">Logic</span>
               </span>
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
-              Professional stringing, practical playbooks and honest gear reviews — built for players who take their game seriously.
+              Tennis knowledge first, with convenient racket pickup and drop-off around London Bridge, Bank and Blackfriars on Tuesday, Wednesday and Thursday.
             </p>
             <div className="mt-5 flex items-center gap-2 text-sm text-gray-400">
               <Mail className="w-4 h-4 text-lime-400" />
@@ -43,7 +43,7 @@ export function Footer() {
                 hello@racketlogic.co.uk
               </a>
             </div>
-            <p className="mt-2 text-xs text-gray-500">Based in England, UK</p>
+            <p className="mt-2 text-xs text-gray-500">Central London handover + UB5 home drop-off</p>
           </div>
 
           {/* Link columns */}
@@ -70,7 +70,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-navy-800 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} RacketLogic. All rights reserved.
+            (c) {new Date().getFullYear()} RacketLogic. All rights reserved.
           </p>
           <p className="text-xs text-gray-500">
             Some links may be affiliate links.{' '}
@@ -83,3 +83,4 @@ export function Footer() {
     </footer>
   )
 }
+

@@ -61,14 +61,13 @@ export default async function AdminBookingsPage() {
                     </Badge>
                   </td>
                   <td className="px-4 py-3">
-                    <Badge variant={b.paymentStatus === 'PAID' ? 'green' : b.paymentStatus === 'DEPOSIT_PAID' ? 'lime' : 'gray'} className="text-xs">
+                    <Badge variant={b.paymentStatus === 'PAID' ? 'green' : 'gray'} className="text-xs">
                       {b.paymentStatus.replace(/_/g, ' ')}
                     </Badge>
                   </td>
                   <td className="px-4 py-3">
                     <Link href={`/admin/bookings/${b.id}`} className="text-lime-600 hover:underline text-xs font-medium">
-                      View →
-                    </Link>
+                      View</Link>
                   </td>
                 </tr>
               ))}
