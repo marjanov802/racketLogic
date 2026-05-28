@@ -17,5 +17,5 @@ export const resend = {
   },
 }
 
-export const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? 'hello@racketlogic.co.uk'
-export const ADMIN_EMAIL = process.env.RESEND_ADMIN_EMAIL ?? 'admin@racketlogic.co.uk'
+export const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? 'hello@racket-logic.com'
+export const ADMIN_EMAIL = process.env.RESEND_ADMIN_EMAIL ?? 'admin@racket-logic.com'

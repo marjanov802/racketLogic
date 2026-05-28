@@ -36,12 +36,16 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         READY_FOR_COLLECTION: 'Your racket is ready for collection.',
         COMPLETED: 'Your stringing has been completed.',
       }
-      await resend.emails.send({
-        from: FROM_EMAIL,
-        to: booking.email,
-        subject: `Booking update — RacketLogic`,
-        html: `<p>Hi ${booking.customerName},</p><p>${statusMessages[body.status]}</p><p>If you have any questions, reply to this email or contact us at hello@racketlogic.co.uk.</p>`,
-      })
+      try {
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: booking.email,
+          subject: `Booking update — RacketLogic`,
+          html: `<p>Hi ${booking.customerName},</p><p>${statusMessages[body.status]}</p><p>If you have any questions, reply to this email or contact us at hello@racket-logic.com.</p>`,
+        })
+      } catch (emailError) {
+        console.error('Booking status email failed:', emailError)
+      }
     }
 
     return NextResponse.json({ success: true, booking })

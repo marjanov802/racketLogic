@@ -25,8 +25,8 @@ export default function ContactPage() {
           <div className="mt-8 flex flex-col gap-3">
             <div className="flex items-center gap-2 text-gray-300">
               <Mail className="w-4 h-4 text-lime-400" />
-              <a href="mailto:hello@racketlogic.co.uk" className="hover:text-lime-400 transition-colors">
-                hello@racketlogic.co.uk
+              <a href="mailto:hello@racket-logic.com" className="hover:text-lime-400 transition-colors">
+                hello@racket-logic.com
               </a>
             </div>
             <div className="flex items-center gap-2 text-gray-300">

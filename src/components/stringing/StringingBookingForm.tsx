@@ -239,7 +239,7 @@ export function StringingBookingForm({ services, selectedService = '', onService
             <p className="text-sm font-semibold text-navy-900">Need help choosing a string?</p>
             <p className="mt-1 text-sm text-gray-700">
               Free consultation is available before confirmation. Message or call to decide what string you would like, need, or want to try.
-              Email <a href="mailto:hello@racketlogic.co.uk" className="font-semibold text-lime-700 hover:underline">hello@racketlogic.co.uk</a>.
+              Email <a href="mailto:hello@racket-logic.com" className="font-semibold text-lime-700 hover:underline">hello@racket-logic.com</a>.
               Daytime response target: within 4 hours.
             </p>
           </div>
@@ -332,7 +332,7 @@ export function StringingBookingForm({ services, selectedService = '', onService
                     <p className="text-sm font-semibold text-navy-900">Free string consultation</p>
                     <p className="mt-1 text-sm text-gray-700">
                       Message or call before final confirmation and we can decide what string you need or what is worth trying. Email{' '}
-                      <a href="mailto:hello@racketlogic.co.uk" className="font-semibold text-lime-700 hover:underline">hello@racketlogic.co.uk</a>.
+                      <a href="mailto:hello@racket-logic.com" className="font-semibold text-lime-700 hover:underline">hello@racket-logic.com</a>.
                       Daytime response target: within 4 hours.
                     </p>
                   </div>
@@ -493,7 +493,7 @@ export function StringingBookingForm({ services, selectedService = '', onService
                   This is a request, not a confirmed drop-off point. We will reply within 4 daytime hours to confirm whether we can meet there or suggest the nearest workable option.
                 </p>
                 <p className="mt-1 text-sm text-gray-600">
-                  Email <a href="mailto:hello@racketlogic.co.uk" className="font-semibold text-lime-700 hover:underline">hello@racketlogic.co.uk</a> if you want to check before booking.
+                  Email <a href="mailto:hello@racket-logic.com" className="font-semibold text-lime-700 hover:underline">hello@racket-logic.com</a> if you want to check before booking.
                 </p>
               </div>
             </div>

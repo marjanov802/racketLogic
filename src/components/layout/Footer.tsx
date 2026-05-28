@@ -39,8 +39,8 @@ export function Footer() {
             </p>
             <div className="mt-5 flex items-center gap-2 text-sm text-gray-400">
               <Mail className="w-4 h-4 text-lime-400" />
-              <a href="mailto:hello@racketlogic.co.uk" className="hover:text-lime-400 transition-colors">
-                hello@racketlogic.co.uk
+              <a href="mailto:hello@racket-logic.com" className="hover:text-lime-400 transition-colors">
+                hello@racket-logic.com
               </a>
             </div>
             <p className="mt-2 text-xs text-gray-500">Central London handover + UB5 home drop-off</p>

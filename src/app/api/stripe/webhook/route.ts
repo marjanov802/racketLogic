@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
                 </a>
               </p>
               <p style="margin-top: 24px; color: #6b7280; font-size: 12px;">
-                If you have any questions, reply to this email or contact us at hello@racketlogic.co.uk
+                If you have any questions, reply to this email or contact us at hello@racket-logic.com
               </p>
             </div>
           `,

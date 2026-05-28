@@ -30,19 +30,22 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    await resend.emails.send({
-      from: FROM_EMAIL,
-      to: data.email,
-      subject: 'Message received — RacketLogic',
-      html: `<p>Hi ${data.name},</p><p>Thanks for getting in touch with RacketLogic. We will respond within 24–48 hours.</p><p>Your message: <em>${data.message}</em></p>`,
-    })
-
-    await resend.emails.send({
-      from: FROM_EMAIL,
-      to: ADMIN_EMAIL,
-      subject: `Contact form — ${data.enquiryType} — ${data.name}`,
-      html: `<h3>Contact enquiry</h3><ul><li>Name: ${data.name}</li><li>Email: ${data.email}</li><li>Type: ${data.enquiryType}</li><li>Message: ${data.message}</li><li>Preferred date: ${data.preferredDate ?? '—'}</li><li>Racket: ${data.racketDetails ?? '—'}</li></ul>`,
-    })
+    try {
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: data.email,
+        subject: 'Message received — RacketLogic',
+        html: `<p>Hi ${data.name},</p><p>Thanks for getting in touch with RacketLogic. We will respond within 24–48 hours.</p><p>Your message: <em>${data.message}</em></p>`,
+      })
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: ADMIN_EMAIL,
+        subject: `Contact form — ${data.enquiryType} — ${data.name}`,
+        html: `<h3>Contact enquiry</h3><ul><li>Name: ${data.name}</li><li>Email: ${data.email}</li><li>Type: ${data.enquiryType}</li><li>Message: ${data.message}</li><li>Preferred date: ${data.preferredDate ?? '—'}</li><li>Racket: ${data.racketDetails ?? '—'}</li></ul>`,
+      })
+    } catch (emailError) {
+      console.error('Contact email failed:', emailError)
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {

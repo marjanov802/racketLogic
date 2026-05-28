@@ -46,7 +46,7 @@ export function ContactForm() {
       setSubmitted(true)
       toast.success('Message sent! We will be in touch within 24–48 hours.')
     } catch {
-      toast.error('Something went wrong. Please email us directly at hello@racketlogic.co.uk')
+      toast.error('Something went wrong. Please email us directly at hello@racket-logic.com')
     } finally {
       setLoading(false)
     }

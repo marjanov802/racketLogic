@@ -72,52 +72,55 @@ export async function POST(req: NextRequest) {
       ? PAYMENT_LABELS[data.paymentPreference] ?? data.paymentPreference
       : 'To be confirmed'
 
-    await resend.emails.send({
-      from: FROM_EMAIL,
-      to: data.email,
-      subject: 'Booking received - RacketLogic Stringing',
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #0f172a;">Booking received</h2>
-          <p>Hi ${data.customerName},</p>
-          <p>Thanks for booking with RacketLogic. We have received your stringing request and will be in touch within 4 daytime hours to confirm your booking, the drop-off plan and payment details.</p>
-          <h3 style="color: #0f172a;">Your booking summary</h3>
-          <ul>
-            <li><strong>Service:</strong> ${data.serviceType.replace(/-/g, ' ')}</li>
-            <li><strong>Racket:</strong> ${data.racketModel ?? 'Not specified'}</li>
-            <li><strong>Drop-off / collection:</strong> ${dropOffLabel}</li>
-            <li><strong>Payment:</strong> ${paymentLabel}</li>
-          </ul>
-          <p>No deposit is required. The full amount can be paid by cash on collection or by bank transfer before collection/return. If bank transfer is selected, bank details will be sent after the booking is confirmed.</p>
-          <p>If you have any questions, reply to this email or contact us at <a href="mailto:hello@racketlogic.co.uk">hello@racketlogic.co.uk</a>.</p>
-          <p style="color: #6b7280; font-size: 12px; margin-top: 24px;">RacketLogic - Tennis knowledge first. Stringing when you need it.</p>
-        </div>
-      `,
-    })
-
-    await resend.emails.send({
-      from: FROM_EMAIL,
-      to: ADMIN_EMAIL,
-      subject: `New stringing booking - ${data.customerName}`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #0f172a;">New stringing booking</h2>
-          <ul>
-            <li><strong>Name:</strong> ${data.customerName}</li>
-            <li><strong>Email:</strong> ${data.email}</li>
-            <li><strong>Phone:</strong> ${data.phone ?? '-'}</li>
-            <li><strong>Service:</strong> ${data.serviceType}</li>
-            <li><strong>Racket:</strong> ${data.racketModel ?? '-'}</li>
-            <li><strong>String:</strong> ${data.stringName ?? '-'}</li>
-            <li><strong>Desired tension:</strong> ${data.desiredTension ?? '-'}</li>
-            <li><strong>Drop-off / collection:</strong> ${dropOffLabel}</li>
-            <li><strong>Payment:</strong> ${paymentLabel}</li>
-            <li><strong>Notes:</strong> ${data.notes ?? '-'}</li>
-          </ul>
-          <p><a href="${process.env.NEXT_PUBLIC_APP_URL}/admin/bookings/${booking.id}">View in admin</a></p>
-        </div>
-      `,
-    })
+    try {
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: data.email,
+        subject: 'Booking received - RacketLogic Stringing',
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #0f172a;">Booking received</h2>
+            <p>Hi ${data.customerName},</p>
+            <p>Thanks for booking with RacketLogic. We have received your stringing request and will be in touch within 4 daytime hours to confirm your booking, the drop-off plan and payment details.</p>
+            <h3 style="color: #0f172a;">Your booking summary</h3>
+            <ul>
+              <li><strong>Service:</strong> ${data.serviceType.replace(/-/g, ' ')}</li>
+              <li><strong>Racket:</strong> ${data.racketModel ?? 'Not specified'}</li>
+              <li><strong>Drop-off / collection:</strong> ${dropOffLabel}</li>
+              <li><strong>Payment:</strong> ${paymentLabel}</li>
+            </ul>
+            <p>No deposit is required. The full amount can be paid by cash on collection or by bank transfer before collection/return. If bank transfer is selected, bank details will be sent after the booking is confirmed.</p>
+            <p>If you have any questions, reply to this email or contact us at <a href="mailto:hello@racket-logic.com">hello@racket-logic.com</a>.</p>
+            <p style="color: #6b7280; font-size: 12px; margin-top: 24px;">RacketLogic - Tennis knowledge first. Stringing when you need it.</p>
+          </div>
+        `,
+      })
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: ADMIN_EMAIL,
+        subject: `New stringing booking - ${data.customerName}`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #0f172a;">New stringing booking</h2>
+            <ul>
+              <li><strong>Name:</strong> ${data.customerName}</li>
+              <li><strong>Email:</strong> ${data.email}</li>
+              <li><strong>Phone:</strong> ${data.phone ?? '-'}</li>
+              <li><strong>Service:</strong> ${data.serviceType}</li>
+              <li><strong>Racket:</strong> ${data.racketModel ?? '-'}</li>
+              <li><strong>String:</strong> ${data.stringName ?? '-'}</li>
+              <li><strong>Desired tension:</strong> ${data.desiredTension ?? '-'}</li>
+              <li><strong>Drop-off / collection:</strong> ${dropOffLabel}</li>
+              <li><strong>Payment:</strong> ${paymentLabel}</li>
+              <li><strong>Notes:</strong> ${data.notes ?? '-'}</li>
+            </ul>
+            <p><a href="${process.env.NEXT_PUBLIC_APP_URL}/admin/bookings/${booking.id}">View in admin</a></p>
+          </div>
+        `,
+      })
+    } catch (emailError) {
+      console.error('Booking email failed:', emailError)
+    }
 
     return NextResponse.json({ success: true, bookingId: booking.id })
   } catch (error) {
