@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
-import { supabaseAdmin, PLAYBOOKS_BUCKET } from '@/lib/supabase'
+import { getAdminStorage, PLAYBOOKS_BUCKET } from '@/lib/supabase'
 import { prisma } from '@/lib/prisma'
 
 async function requireAdmin() {
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
-    const { error } = await supabaseAdmin.storage
+    const { error } = await getAdminStorage()
       .from(PLAYBOOKS_BUCKET)
       .upload(filePath, buffer, {
         contentType: 'application/pdf',

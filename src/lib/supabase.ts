@@ -31,27 +31,22 @@ function getAdminClient() {
   return adminClient
 }
 
-// Public client. Only uses browser-safe Supabase keys.
-export const supabase = {
-  get storage() {
-    return getPublicClient().storage
-  },
-}
-
-// Server-side admin client. Never expose the service role key to browser code.
-export const supabaseAdmin = {
-  get storage() {
-    return getAdminClient().storage
-  },
-}
-
 export const PLAYBOOKS_BUCKET = 'playbooks'
 export const IMAGES_BUCKET = 'images'
 
+// Plain function exports — never evaluated at module load time by Turbopack.
+export function getPublicStorage() {
+  return getPublicClient().storage
+}
+
+export function getAdminStorage() {
+  return getAdminClient().storage
+}
+
 export async function getSignedDownloadUrl(filePath: string): Promise<string | null> {
-  const { data, error } = await supabaseAdmin.storage
+  const { data, error } = await getAdminStorage()
     .from(PLAYBOOKS_BUCKET)
-    .createSignedUrl(filePath, 60 * 60) // 1 hour
+    .createSignedUrl(filePath, 60 * 60)
 
   if (error || !data) return null
   return data.signedUrl
