@@ -1,14 +1,49 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+let publicClient: SupabaseClient | null = null
+let adminClient: SupabaseClient | null = null
 
-// Public client (browser-safe)
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+function requireEnv(name: string) {
+  const value = process.env[name]
 
-// Server-side admin client — never expose to browser
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
+  if (!value) {
+    throw new Error(`${name} is not configured`)
+  }
+
+  return value
+}
+
+function getPublicClient() {
+  publicClient ??= createClient(
+    requireEnv('NEXT_PUBLIC_SUPABASE_URL'),
+    requireEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY')
+  )
+
+  return publicClient
+}
+
+function getAdminClient() {
+  adminClient ??= createClient(
+    requireEnv('NEXT_PUBLIC_SUPABASE_URL'),
+    requireEnv('SUPABASE_SERVICE_ROLE_KEY')
+  )
+
+  return adminClient
+}
+
+// Public client. Only uses browser-safe Supabase keys.
+export const supabase = {
+  get storage() {
+    return getPublicClient().storage
+  },
+}
+
+// Server-side admin client. Never expose the service role key to browser code.
+export const supabaseAdmin = {
+  get storage() {
+    return getAdminClient().storage
+  },
+}
 
 export const PLAYBOOKS_BUCKET = 'playbooks'
 export const IMAGES_BUCKET = 'images'
