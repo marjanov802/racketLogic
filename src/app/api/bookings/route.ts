@@ -37,7 +37,14 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const data = bookingSchema.parse(body)
 
-    const { userId } = await auth()
+    let userId: string | null = null
+
+    try {
+      const authResult = await auth()
+      userId = authResult.userId
+    } catch (authError) {
+      console.warn('Booking submitted without Clerk auth context:', authError)
+    }
 
     let internalUserId: string | undefined
     if (userId) {
