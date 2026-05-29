@@ -535,7 +535,6 @@ export function StringingBookingForm({ services, selectedService = '', onService
                 checked={paymentPreference === option.value}
                 onChange={() => setPaymentPreference(option.value)}
                 className="sr-only"
-                required
               />
               <p className="text-sm font-semibold text-navy-900">{option.label}</p>
               <p className="mt-1 text-xs text-gray-500">{option.note}</p>
