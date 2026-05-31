@@ -11,7 +11,8 @@ async function getStats() {
       totalBookings,
       newBookings,
       totalPurchases,
-      totalRevenue,
+      purchaseRevenue,
+      bookingRevenue,
       totalUsers,
       newEnquiries,
       recentBookings,
@@ -21,13 +22,14 @@ async function getStats() {
       prisma.booking.count({ where: { status: 'NEW' } }),
       prisma.purchase.count({ where: { paymentStatus: 'PAID' } }),
       prisma.purchase.aggregate({ where: { paymentStatus: 'PAID' }, _sum: { amount: true } }),
+      prisma.booking.aggregate({ where: { paymentStatus: 'PAID' }, _sum: { price: true } }),
       prisma.user.count(),
       prisma.customProgrammeEnquiry.count({ where: { status: 'NEW' } }),
       prisma.booking.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }),
       prisma.purchase.findMany({ where: { paymentStatus: 'PAID' }, include: { playbook: true, user: true }, orderBy: { createdAt: 'desc' }, take: 5 }),
     ])
 
-    return { totalBookings, newBookings, totalPurchases, totalRevenue, totalUsers, newEnquiries, recentBookings, recentPurchases }
+    return { totalBookings, newBookings, totalPurchases, purchaseRevenue, bookingRevenue, totalUsers, newEnquiries, recentBookings, recentPurchases }
   } catch {
     return null
   }
@@ -40,6 +42,7 @@ const statusColors: Record<string, 'default' | 'lime' | 'navy' | 'green' | 'red'
 
 export default async function AdminPage() {
   const stats = await getStats()
+  const totalRevenue = Number(stats?.purchaseRevenue._sum.amount ?? 0) + Number(stats?.bookingRevenue._sum.price ?? 0)
 
   return (
     <div className="p-8">
@@ -53,7 +56,7 @@ export default async function AdminPage() {
         {[
           { label: 'New Bookings', value: stats?.newBookings ?? 0, total: stats?.totalBookings, icon: Calendar, href: '/admin/bookings', color: 'text-yellow-600 bg-yellow-50' },
           { label: 'Playbook Sales', value: stats?.totalPurchases ?? 0, icon: BookOpen, href: '/admin/playbooks', color: 'text-lime-600 bg-lime-50' },
-          { label: 'Revenue', value: formatPrice(Number(stats?.totalRevenue._sum.amount ?? 0)), icon: TrendingUp, href: '/admin/revenue', color: 'text-green-600 bg-green-50' },
+          { label: 'Revenue', value: formatPrice(totalRevenue), icon: TrendingUp, href: '/admin/revenue', color: 'text-green-600 bg-green-50' },
           { label: 'New Enquiries', value: stats?.newEnquiries ?? 0, icon: MessageSquare, href: '/admin/enquiries', color: 'text-navy-600 bg-navy-50' },
         ].map((stat) => {
           const Icon = stat.icon

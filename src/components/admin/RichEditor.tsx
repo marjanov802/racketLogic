@@ -50,6 +50,7 @@ export function RichEditor({ content, onChange, placeholder, className }: Props)
       Placeholder.configure({ placeholder: placeholder ?? 'Write your content here...' }),
     ],
     content: content ?? '',
+    immediatelyRender: false,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML())
     },

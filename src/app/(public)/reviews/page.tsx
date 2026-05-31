@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Star, ArrowRight, Filter } from 'lucide-react'
+import { Filter } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { Disclaimer } from '@/components/ui/Disclaimer'
+import { ReviewFilters } from '@/components/reviews/ReviewFilters'
 import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = {
@@ -11,8 +12,6 @@ export const metadata: Metadata = {
   description:
     'Tennis gear reviews and practical buying advice. Rackets, strings, shoes, grips and accessories reviewed with clear verdicts.',
 }
-
-const categories = ['All', 'Rackets', 'Strings', 'Shoes', 'Grips', 'Accessories']
 
 const placeholderCategories = [
   { name: 'Rackets', label: 'Frame reviews', desc: 'Control, power and player frames reviewed by setup and player type.' },
@@ -32,21 +31,6 @@ async function getReviews() {
   }
 }
 
-function StarRating({ rating }: { rating: number | null | undefined }) {
-  if (!rating) return null
-  return (
-    <div className="flex items-center gap-0.5">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={`w-3.5 h-3.5 ${i < Math.round(rating / 2) ? 'fill-lime-500 text-lime-500' : 'text-gray-300'}`}
-        />
-      ))}
-      <span className="text-xs text-gray-500 ml-1">{rating}/10</span>
-    </div>
-  )
-}
-
 export default async function ReviewsPage() {
   const reviews = await getReviews()
 
@@ -58,28 +42,20 @@ export default async function ReviewsPage() {
             Blog & Reviews
           </Badge>
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-5 max-w-2xl">
-            Honest tennis reviews with setup context.
+            Personal tennis reviews from real product experience.
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl leading-relaxed">
-            Rackets, strings, shoes, grips and accessories reviewed through the lens of
-            real tennis setup: who it suits, what it changes, and what to do next.
+            Rackets, strings, shoes, grips and accessories reviewed through my own opinion,
+            setup thinking and on-court experience with the product.
           </p>
         </div>
       </section>
 
-      <section className="py-6 border-b border-gray-100 bg-white sticky top-16 z-10">
+      <section className="py-6 border-b border-gray-100 bg-white">
         <div className="container-lg">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
             <Filter className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            {categories.map((cat) => (
-              <Link
-                key={cat}
-                href={cat === 'All' ? '/reviews' : `/reviews?category=${cat.toLowerCase()}`}
-                className="flex-shrink-0 px-4 py-1.5 rounded-full border border-gray-200 text-sm text-gray-600 hover:border-lime-400 hover:text-lime-600 hover:bg-lime-50 transition-colors"
-              >
-                {cat}
-              </Link>
-            ))}
+            Search by product name, brand or review category.
           </div>
         </div>
       </section>
@@ -112,38 +88,17 @@ export default async function ReviewsPage() {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {reviews.map((review) => (
-                <Link key={review.id} href={`/reviews/${review.slug}`}>
-                  <Card hover className="h-full flex flex-col">
-                    {review.coverImage ? (
-                      <img
-                        src={review.coverImage}
-                        alt={review.productName}
-                        className="w-full aspect-video object-contain bg-white rounded-xl mb-4 border border-gray-100"
-                      />
-                    ) : (
-                      <div className="aspect-video bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-sm font-semibold text-gray-400 uppercase tracking-wider">
-                        {review.category}
-                      </div>
-                    )}
-                    <div className="flex items-center gap-2 mb-3">
-                      <Badge variant="gray">{review.category}</Badge>
-                      {review.featured && <Badge variant="lime">Featured</Badge>}
-                    </div>
-                    <p className="text-xs text-gray-400 mb-1">{review.brand}</p>
-                    <h3 className="font-bold text-navy-900 mb-2 flex-1">{review.title}</h3>
-                    <p className="text-sm text-gray-600 mb-4 leading-relaxed line-clamp-2">{review.excerpt}</p>
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                      <StarRating rating={review.rating} />
-                      <span className="text-xs font-semibold text-lime-600 flex items-center gap-1">
-                        Read review <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </Card>
-                </Link>
-              ))}
-            </div>
+            <ReviewFilters reviews={reviews.map((review) => ({
+              id: review.id,
+              title: review.title,
+              slug: review.slug,
+              category: review.category,
+              productName: review.productName,
+              brand: review.brand,
+              excerpt: review.excerpt,
+              coverImage: review.coverImage,
+              featured: review.featured,
+            }))} />
           )}
         </div>
       </section>

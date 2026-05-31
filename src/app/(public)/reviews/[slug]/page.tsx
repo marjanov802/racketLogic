@@ -213,7 +213,7 @@ type CategoryConfig = {
   feel: string
   recommendedFor: string[]
   lessIdealFor: string[]
-  colourways?: { name: string; image: string }[]
+  colourways?: Colourway[]
   finalIntro: string
 }
 
@@ -403,6 +403,24 @@ interface AffiliateLink {
   url?: string
 }
 
+interface Colourway {
+  name?: string
+  image?: string
+  links?: AffiliateLink[]
+}
+
+interface DisplayColourway {
+  name: string
+  image: string
+  links: AffiliateLink[]
+}
+
+interface GalleryItem {
+  type?: 'image' | 'video'
+  label?: string
+  url?: string
+}
+
 function getAffiliateLinks(value: unknown, fallbackUrl: string | null): AffiliateLink[] {
   const links = Array.isArray(value)
     ? value.filter((item): item is AffiliateLink => typeof item === 'object' && item !== null && 'url' in item)
@@ -411,6 +429,48 @@ function getAffiliateLinks(value: unknown, fallbackUrl: string | null): Affiliat
   if (links.length > 0) return links.filter((link) => Boolean(link.url))
   if (fallbackUrl) return [{ retailer: 'Retailer', price: 'Check current price', url: fallbackUrl }]
   return []
+}
+
+function getColourways(value: unknown, fallback: Colourway[] | undefined): DisplayColourway[] | undefined {
+  if (Array.isArray(value)) {
+    return value
+      .filter((item): item is Colourway => typeof item === 'object' && item !== null)
+      .filter((colourway) => Boolean(colourway.name) && Boolean(colourway.image))
+      .map((colourway) => ({
+        name: colourway.name!,
+        image: colourway.image!,
+        links: Array.isArray(colourway.links)
+          ? colourway.links.filter((link) => Boolean(link.url))
+          : [],
+      }))
+  }
+
+  return fallback
+    ?.filter((colourway) => Boolean(colourway.name) && Boolean(colourway.image))
+    .map((colourway) => ({
+      name: colourway.name!,
+      image: colourway.image!,
+      links: Array.isArray(colourway.links) ? colourway.links.filter((link) => Boolean(link.url)) : [],
+    }))
+}
+
+function getGallery(value: unknown): Required<GalleryItem>[] {
+  if (!Array.isArray(value)) return []
+
+  return value
+    .filter((item): item is GalleryItem => typeof item === 'object' && item !== null)
+    .filter((item) => Boolean(item.url))
+    .map((item) => ({
+      type: item.type === 'video' ? 'video' : 'image',
+      label: item.label ?? '',
+      url: item.url!,
+    }))
+}
+
+function hasHtmlContent(value: string | null | undefined) {
+  if (!value) return false
+  const plainText = value.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, '').trim()
+  return plainText.length > 0
 }
 
 async function getReview(slug: string) {
@@ -441,6 +501,8 @@ export default async function ReviewPage({ params }: PageProps) {
   const goodFit = config.recommendedFor
   const lessFit = config.lessIdealFor
   const extraSections = reviewSectionOverrides[review.slug] ?? categorySections[review.category] ?? categorySections.Accessories
+  const colourways = getColourways(review.colourways, config.colourways)
+  const gallery = getGallery(review.gallery)
 
   return (
     <div className="bg-gray-50">
@@ -512,6 +574,50 @@ export default async function ReviewPage({ params }: PageProps) {
                 </p>
               </Card>
 
+              {hasHtmlContent(review.content) && (
+                <Card>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-2">Review notes</p>
+                  <h2 className="text-2xl font-serif font-bold text-navy-900 mb-4">Personal review notes</h2>
+                  <div
+                    className="prose-content text-gray-700"
+                    dangerouslySetInnerHTML={{ __html: review.content }}
+                  />
+                </Card>
+              )}
+
+              {(review.mainBenefit || review.mainDownside || review.whoIsItFor || review.whoIsItNotFor) && (
+                <Card>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-2">Admin verdict fields</p>
+                  <h2 className="text-2xl font-serif font-bold text-navy-900 mb-5">Quick take</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {review.mainBenefit && (
+                      <div className="rounded-lg border border-gray-100 bg-white px-4 py-3">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Main benefit</p>
+                        <p className="text-sm text-gray-700">{review.mainBenefit}</p>
+                      </div>
+                    )}
+                    {review.mainDownside && (
+                      <div className="rounded-lg border border-gray-100 bg-white px-4 py-3">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Main downside</p>
+                        <p className="text-sm text-gray-700">{review.mainDownside}</p>
+                      </div>
+                    )}
+                    {review.whoIsItFor && (
+                      <div className="rounded-lg border border-gray-100 bg-white px-4 py-3">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Who it is for</p>
+                        <p className="text-sm text-gray-700">{review.whoIsItFor}</p>
+                      </div>
+                    )}
+                    {review.whoIsItNotFor && (
+                      <div className="rounded-lg border border-gray-100 bg-white px-4 py-3">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Who it is not for</p>
+                        <p className="text-sm text-gray-700">{review.whoIsItNotFor}</p>
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              )}
+
               <Card>
                 <p className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-2">Player fit</p>
                 <h2 className="text-2xl font-serif font-bold text-navy-900 mb-5">Who I would recommend it for</h2>
@@ -566,12 +672,12 @@ export default async function ReviewPage({ params }: PageProps) {
                 )}
               </Card>
 
-              {config.colourways && config.colourways.length > 0 && (
+              {colourways && colourways.length > 0 && (
                 <Card>
                   <p className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-2">Range</p>
                   <h2 className="text-2xl font-serif font-bold text-navy-900 mb-5">Colourways in this model</h2>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {config.colourways.map((colourway) => (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {colourways.map((colourway) => (
                       <div key={colourway.name} className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:border-lime-200 hover:shadow-md transition-all duration-300">
                         <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
                           <img
@@ -581,14 +687,69 @@ export default async function ReviewPage({ params }: PageProps) {
                           />
                         </div>
                         <div className="border-t border-gray-100 px-3 py-3">
-                          <p className="text-xs font-semibold text-navy-900 text-center">{colourway.name}</p>
+                          <p className="text-sm font-semibold text-navy-900 text-center">{colourway.name}</p>
+                          {colourway.links && colourway.links.length > 0 ? (
+                            <div className="mt-3 space-y-2">
+                              {colourway.links.map((link, index) => (
+                                <a
+                                  key={`${link.url}-${index}`}
+                                  href={link.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer sponsored"
+                                  className="flex items-center justify-between gap-3 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-xs font-semibold text-navy-900 hover:border-lime-300 hover:bg-lime-50/40 transition-colors"
+                                >
+                                  <span>{link.retailer || 'Retailer'}</span>
+                                  <span className="inline-flex items-center gap-1 text-lime-700">
+                                    {link.price || 'Check availability'} <ExternalLink className="w-3 h-3" />
+                                  </span>
+                                </a>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="mt-2 text-center text-xs text-gray-400">
+                              No colour-specific links added.
+                            </p>
+                          )}
                         </div>
                       </div>
                     ))}
                   </div>
                   <p className="mt-4 text-xs text-gray-500">
-                    Colourways change regularly by retailer and season, so this section is a guide rather than a permanent list.
+                    Colourways, sizes and stock change regularly by retailer. Use colour-specific links where possible, then check your size before buying.
                   </p>
+                </Card>
+              )}
+
+              {gallery.length > 0 && (
+                <Card>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-2">Gallery</p>
+                  <h2 className="text-2xl font-serif font-bold text-navy-900 mb-5">Product gallery</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {gallery.map((item, index) => (
+                      <figure key={`${item.url}-${index}`} className="rounded-2xl border border-gray-100 bg-white overflow-hidden">
+                        <div className="aspect-video bg-gray-50 flex items-center justify-center">
+                          {item.type === 'video' ? (
+                            <video
+                              src={item.url}
+                              controls
+                              className="w-full h-full object-contain"
+                            />
+                          ) : (
+                            <img
+                              src={item.url}
+                              alt={item.label || `${review.productName} gallery image ${index + 1}`}
+                              className="w-full h-full object-contain p-3"
+                            />
+                          )}
+                        </div>
+                        {item.label && (
+                          <figcaption className="border-t border-gray-100 px-4 py-3 text-sm font-semibold text-navy-900">
+                            {item.label}
+                          </figcaption>
+                        )}
+                      </figure>
+                    ))}
+                  </div>
                 </Card>
               )}
 

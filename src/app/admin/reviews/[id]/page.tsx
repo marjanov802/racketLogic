@@ -24,6 +24,8 @@ export default async function EditReviewPage({ params }: PageProps) {
         productName: review.productName, brand: review.brand, excerpt: review.excerpt,
         content: review.content, affiliateUrl: review.affiliateUrl ?? '',
         affiliateLinks: Array.isArray(review.affiliateLinks) ? review.affiliateLinks as { retailer: string; price: string; url: string }[] : [],
+        colourways: Array.isArray(review.colourways) ? review.colourways as { name: string; image: string }[] : [],
+        gallery: Array.isArray(review.gallery) ? review.gallery as { type: 'image' | 'video'; label: string; url: string }[] : [],
         coverImage: review.coverImage ?? '',
         rating: review.rating ? String(review.rating) : '', whoIsItFor: review.whoIsItFor ?? '',
         whoIsItNotFor: review.whoIsItNotFor ?? '', mainBenefit: review.mainBenefit ?? '',
