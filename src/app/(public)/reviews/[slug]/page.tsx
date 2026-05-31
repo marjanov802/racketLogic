@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Check, ExternalLink } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
-import { Button } from '@/components/ui/Button'
 import { Disclaimer } from '@/components/ui/Disclaimer'
 import { prisma } from '@/lib/prisma'
 
@@ -16,40 +15,43 @@ const reviewedSpecs = [
   ['Model reviewed', 'Tecnifibre TFight 305 ISOFLEX'],
   ['Head size', '98 sq in'],
   ['Weight', '305 g unstrung'],
+  ['Other TFight weights', '295 g, 300 g, 315 g options in the wider range'],
   ['String pattern', '18 x 19'],
   ['Length', '27 in'],
   ['Beam', '22.5 mm'],
-  ['General style', 'Control / precision frame'],
-  ['Typical player', 'Intermediate to advanced'],
+  ['Balance feel', 'Even to slightly head-heavy feel'],
+  ['General style', 'Control, feel and stability'],
+  ['Typical player', 'Intermediate to advanced ball striker'],
 ]
 
 const technologyNotes = [
   {
-    title: 'ISOFLEX',
-    body: 'Designed to create a more consistent response across the string bed, especially when contact is not perfectly central.',
+    title: 'Tecnilab process',
+    body: 'Tecnifibre describe Tecnilab as their method for working with players, gathering scientific data, quantifying what needs improving, and then building a technical solution into the racket. The useful point is that the TFight does not feel like random marketing: it feels like a frame designed around stability, feel and a cleaner response under pace.',
   },
   {
-    title: 'RS Section beam',
-    body: 'A shaped beam design intended to balance stability, power and control rather than making the racket feel like a pure power frame.',
+    title: 'ISOFLEX frame response',
+    body: 'ISOFLEX is there to create a more consistent, stable response around the frame. For a one-handed backhand especially, that stiffness and support matter because you do not have a second hand helping the racket stay firm through contact.',
   },
   {
     title: '18 x 19 pattern',
-    body: 'A slightly unusual string pattern that sits between dense control patterns and more open spin patterns.',
+    body: 'The 18 x 19 string pattern gives extra control without feeling completely dead. You can really feel how string tension changes the response: tighter setups make it feel firmer, more stable and almost bat-like through the ball.',
   },
 ]
 
 const recommendedFor = [
-  'Baseline attackers who like to take the ball early',
-  'Players who hit fairly flat or with controlled topspin',
-  'Two-handed backhand players who want stability through contact',
-  'All-court players who want precision on returns and volleys',
-  'Serve-plus-one players who create their own racket speed',
+  'One-handed backhand players who want a manoeuvrable racket with stability through contact',
+  'Players who like feeling the ball on forehands, volleys and touch shots',
+  'Attackers who want control, feel and confidence when taking the ball early',
+  'Players who can generate their own racket speed and want the frame to stay solid',
+  'All-court players who want a racket that can absorb pace and redirect it cleanly',
 ]
 
 const lessIdealFor = [
   'Beginners who need easy depth',
   'Players who want lots of free power',
-  'Defensive players who rely on the racket helping them from stretched positions',
+  'Players who want a huge, forgiving sweet spot',
+  'Defensive players who rely on the racket doing more of the work from stretched positions',
   'Players with arm discomfort using stiff polyester at high tension',
 ]
 
@@ -94,21 +96,30 @@ const shoeLessIdealFor = [
 const categorySections: Record<string, { eyebrow: string; title: string; items: { label: string; body: string }[] }[]> = {
   Rackets: [
     {
-      eyebrow: 'On-court use',
-      title: 'What it does best',
+      eyebrow: 'On-court feel',
+      title: 'Forehands, volleys and fast balls',
       items: [
-        { label: 'Power or control?', body: 'More control than easy power. It rewards a full swing and clean timing.' },
-        { label: 'Spin or flat hitting?', body: 'Better for controlled topspin and flatter ball striking than extreme spin.' },
-        { label: 'Serve and return', body: 'Good if you create racket speed. Strong on returns because it feels stable through contact.' },
+        { label: 'Forehands', body: 'The racket feels very manoeuvrable, with a lot of feel on forehands. You can shape the ball, drive through it, or rip up the back of it when you commit to the swing.' },
+        { label: 'Volleys', body: 'Volleys feel solid and connected. It does not feel flimsy at the net, which helps when you are blocking pace or trying to keep the volley short and controlled.' },
+        { label: 'Fast balls', body: 'Against faster balls, the frame absorbs pace surprisingly well. Once the racket starts to feel like an extension of your arm, it gives a lot of confidence redirecting heavy shots.' },
       ],
     },
     {
-      eyebrow: 'Setup',
-      title: 'Strings and customisation',
+      eyebrow: 'Backhand fit',
+      title: 'One-handed and two-handed backhands',
       items: [
-        { label: 'String choice', body: 'A controlled poly or hybrid makes sense. Avoid going too stiff if comfort matters.' },
-        { label: 'Tension direction', body: 'Start around a normal mid tension, then lower if you want easier depth or comfort.' },
-        { label: 'Customisation', body: 'Lead tape can help stability, but only if you already like the basic frame.' },
+        { label: 'One-handed backhand', body: 'This is where the racket makes a lot of sense. The balance does not feel buried in the handle; it feels closer to even or slightly head-heavy, which helps the head drop and come up the back of the ball for spin.' },
+        { label: 'Two-handed backhand', body: 'For two-handers, the stability still helps. The balance gives the racket enough presence through contact, although the strongest fit still feels like a player who wants feel and precision rather than easy power.' },
+        { label: 'Frame support', body: 'The ISOFLEX stiffness around the frame is useful here. On a one-hander especially, you want the racket to stay firm and not twist or feel too flimsy when you only have one hand behind the shot.' },
+      ],
+    },
+    {
+      eyebrow: 'String bed',
+      title: 'Sweet spot, control and tension',
+      items: [
+        { label: 'Small but excellent sweet spot', body: 'The sweet spot feels excellent when you find it, but it is not huge. The 98 sq in head rewards clean contact more than it forgives lazy timing.' },
+        { label: 'Tension feel', body: 'With the 18 x 19 pattern, you can clearly feel string tension changing the racket. Higher tension makes the response firmer, more controlled and more stable, almost like hitting with a wooden bat.' },
+        { label: 'Control identity', body: 'This is not a free-power frame. Its best quality is the feeling that you can choose the shot once you are timing the ball well.' },
       ],
     },
   ],
@@ -202,6 +213,7 @@ type CategoryConfig = {
   feel: string
   recommendedFor: string[]
   lessIdealFor: string[]
+  colourways?: { name: string; image: string }[]
   finalIntro: string
 }
 
@@ -210,10 +222,10 @@ const categoryConfig: Record<string, CategoryConfig> = {
     label: 'racket',
     specs: reviewedSpecs,
     technologies: technologyNotes,
-    feel: 'In my opinion, this racket feels controlled, crisp and quite serious. It does not give a lot of free power, so it feels best when you swing fully and commit through the ball. The 98 sq in head and 18 x 19 pattern make it feel precise, while the frame has enough stability to handle pace when contact is clean. If you are late or off-centre, it can feel more demanding than a softer or more powerful racket.',
+    feel: 'In my opinion, the TFight 305 ISOFLEX feels manoeuvrable, solid and very connected. Forehands and volleys have a lot of feel, and the frame gives you the sense that the ball is sitting on the strings long enough for you to shape it. The balance does not feel heavily in the handle; it feels closer to even or slightly head-heavy, which is part of why it works so well for a one-handed backhand. You can drop the racket head easily, generate spin, and rip up the back of the ball without the frame feeling unstable.',
     recommendedFor,
     lessIdealFor,
-    finalIntro: 'This is strictly my view based on how I would interpret the racket for a club player choosing equipment. I would put it in the control-focused category rather than calling it an easy power racket. It suits players who already create pace and want a frame that helps them direct the ball.',
+    finalIntro: 'This is strictly my opinion from using and interpreting the racket. I would describe the TFight 305 ISOFLEX as a control and feel racket with serious stability when you hit the sweet spot. It is not the easiest racket for everyone, and the sweet spot does feel small, but when you are timing the ball well it becomes one of those frames where you feel like you can do almost anything with the shot.',
   },
   Shoes: {
     label: 'shoe',
@@ -286,6 +298,105 @@ const categoryConfig: Record<string, CategoryConfig> = {
   },
 }
 
+const reviewConfigOverrides: Record<string, CategoryConfig> = {
+  'lacoste-ag-lt23-review': {
+    label: 'shoe',
+    specs: [
+      ['Model reviewed', 'Lacoste AG-LT23'],
+      ['Court type', 'All-court / clay version available'],
+      ['Grass version', 'No grass-court model'],
+      ['Fit feel', 'Secure and narrow-foot friendly'],
+      ['Weight feel', 'Light on foot'],
+      ['Best for', 'Players who want comfort, court feel and support'],
+      ['Main trade-off', 'Durability'],
+    ],
+    technologies: [
+      {
+        title: 'Midfoot support',
+        body: 'The middle support gives the shoe a stable platform from the back and through direction changes. It does not feel bulky, but the foot still feels held.',
+      },
+      {
+        title: 'Heel padding',
+        body: 'The heel area feels very comfortable and padded. That is a big part of why the shoe feels secure rather than harsh.',
+      },
+      {
+        title: 'Lace protection',
+        body: 'The laces are protected by small material guards, which helps stop them getting shredded when sliding.',
+      },
+      {
+        title: 'Low front court feel',
+        body: 'The front of the shoe feels quite shallow and close to the court, so you get good feedback from the surface rather than feeling disconnected.',
+      },
+    ],
+    feel: 'In my opinion, the Lacoste AG-LT23 is one of the most comfortable tennis shoes I have worn. It feels light on the foot, breathable, secure, and very all-court. The heel padding gives comfort, the midfoot support gives stability, and the lower front of the shoe helps you feel the court. For my feet, which are narrow, the fit feels especially good.',
+    recommendedFor: [
+      'Players with narrow feet who want a secure fit',
+      'Players who like a light, breathable shoe',
+      'All-court players who want comfort without losing court feel',
+      'Clay-court players who want a good clay tread pattern',
+      'Players who want heel comfort and midfoot support',
+    ],
+    lessIdealFor: [
+      'Players who destroy outsoles quickly',
+      'Players who need maximum durability above everything else',
+      'Players looking for a grass-court specific shoe',
+      'Wide-footed players unless they try the fit first',
+    ],
+    colourways: [
+      { name: 'White / Navy', image: '/images/reviews/lacoste-ag-lt23.jpeg' },
+      { name: 'White / Green', image: '/images/reviews/lacoste-ag-lt23.jpeg' },
+      { name: 'White / Black', image: '/images/reviews/lacoste-ag-lt23.jpeg' },
+      { name: 'Navy / White', image: '/images/reviews/lacoste-ag-lt23.jpeg' },
+      { name: 'Black / White', image: '/images/reviews/lacoste-ag-lt23.jpeg' },
+      { name: 'Clay White / Red', image: '/images/reviews/lacoste-ag-lt23.jpeg' },
+      { name: 'Seasonal Blue', image: '/images/reviews/lacoste-ag-lt23.jpeg' },
+      { name: 'Seasonal Green', image: '/images/reviews/lacoste-ag-lt23.jpeg' },
+    ],
+    finalIntro: 'This is strictly my opinion from wearing the shoe. I think the Lacoste AG-LT23 feels excellent on foot: light, secure, breathable and very comfortable. The problem is durability. The outsole and grip wear too quickly, especially with sliding, so the shoe feels better than it lasts.',
+  },
+}
+
+const reviewSectionOverrides: typeof categorySections = {
+  'lacoste-ag-lt23-review': [
+    {
+      eyebrow: 'Fit and comfort',
+      title: 'Light, secure and narrow-foot friendly',
+      items: [
+        { label: 'Foot shape', body: 'The fit feels best for narrow feet. It holds the foot securely without making the foot feel inflated or trapped.' },
+        { label: 'Heel comfort', body: 'The padding around the heel is one of the best parts of the shoe. It makes the shoe feel comfortable straight away.' },
+        { label: 'Breathability', body: 'The shoe feels breathable. Your foot does not feel swollen or inflated inside it, which helps over longer sessions.' },
+      ],
+    },
+    {
+      eyebrow: 'Court feel',
+      title: 'All-court stability and surface feel',
+      items: [
+        { label: 'All-court feel', body: 'It feels very all-court: light enough to move easily, but still supported through the middle of the shoe.' },
+        { label: 'Shallow front', body: 'The front feels low and close to the court, which gives good court feedback and helps you feel connected when moving.' },
+        { label: 'Clay version', body: 'The clay-court version has a good pattern for clay and gives strong bite at first.' },
+      ],
+    },
+    {
+      eyebrow: 'Durability',
+      title: 'The big weakness',
+      items: [
+        { label: 'Outsole wear', body: 'Durability is the main issue. The outside wears quickly from sliding and the grip goes faster than it should.' },
+        { label: 'Clay grip life', body: 'Even though the clay tread pattern is good, the durability still lets it down if you slide often.' },
+        { label: 'Lace protection', body: 'The lace protection is a good detail. The small material guards help stop the laces breaking from sliding.' },
+      ],
+    },
+    {
+      eyebrow: 'Range',
+      title: 'Colourways and court models',
+      items: [
+        { label: 'Colourways', body: 'Colourways change by season and retailer, so the review page should show the main colour options available at the time of writing.' },
+        { label: 'Clay model', body: 'There is a clay-court model, and the tread pattern works well for clay movement.' },
+        { label: 'No grass model', body: 'There is no grass-court model, so players needing a proper grass outsole should look elsewhere.' },
+      ],
+    },
+  ],
+}
+
 interface AffiliateLink {
   retailer?: string
   price?: string
@@ -324,12 +435,12 @@ export default async function ReviewPage({ params }: PageProps) {
   const review = await getReview(slug)
   if (!review) notFound()
   const affiliateLinks = getAffiliateLinks(review.affiliateLinks, review.affiliateUrl)
-  const config = categoryConfig[review.category] ?? categoryConfig.Accessories
+  const config = reviewConfigOverrides[review.slug] ?? categoryConfig[review.category] ?? categoryConfig.Accessories
   const specs = config.specs
   const technologies = config.technologies
   const goodFit = config.recommendedFor
   const lessFit = config.lessIdealFor
-  const extraSections = categorySections[review.category] ?? categorySections.Accessories
+  const extraSections = reviewSectionOverrides[review.slug] ?? categorySections[review.category] ?? categorySections.Accessories
 
   return (
     <div className="bg-gray-50">
@@ -454,6 +565,32 @@ export default async function ReviewPage({ params }: PageProps) {
                   <p className="text-gray-700 leading-relaxed">{review.verdict}</p>
                 )}
               </Card>
+
+              {config.colourways && config.colourways.length > 0 && (
+                <Card>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-2">Range</p>
+                  <h2 className="text-2xl font-serif font-bold text-navy-900 mb-5">Colourways in this model</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {config.colourways.map((colourway) => (
+                      <div key={colourway.name} className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:border-lime-200 hover:shadow-md transition-all duration-300">
+                        <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
+                          <img
+                            src={colourway.image}
+                            alt={`${review.productName} ${colourway.name}`}
+                            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="border-t border-gray-100 px-3 py-3">
+                          <p className="text-xs font-semibold text-navy-900 text-center">{colourway.name}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="mt-4 text-xs text-gray-500">
+                    Colourways change regularly by retailer and season, so this section is a guide rather than a permanent list.
+                  </p>
+                </Card>
+              )}
 
               <Disclaimer type="affiliate" />
             </main>

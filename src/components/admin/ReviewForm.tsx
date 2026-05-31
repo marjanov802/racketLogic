@@ -48,6 +48,15 @@ const categoryOptions = [
   { value: 'Comparisons', label: 'Comparisons' },
 ]
 
+const reviewTemplateHints: Record<string, string[]> = {
+  Rackets: ['Specifications', 'Technology', 'Feel on court', 'Player fit', 'Sweet spot/control/setup notes'],
+  Shoes: ['Specifications', 'Colourways', 'Fit and comfort', 'Court feel', 'Durability', 'Court models'],
+  Strings: ['String type', 'Gauge/tension', 'Power/spin/control/comfort', 'Lifespan', 'Best player fit'],
+  Grips: ['Grip type', 'Tack/absorption', 'Thickness and bevel feel', 'Sweat handling', 'Replacement timing'],
+  Accessories: ['Problem solved', 'Compatibility', 'Build quality', 'Value', 'Who should buy it'],
+  Comparisons: ['Products compared', 'Main differences', 'Who should choose each option', 'Final recommendation'],
+}
+
 function initialAffiliateLinks(review?: ReviewData): AffiliateLink[] {
   if (Array.isArray(review?.affiliateLinks) && review.affiliateLinks.length > 0) {
     return [
@@ -76,6 +85,7 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
   const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState(review?.title ?? '')
   const [slug, setSlug] = useState(review?.slug ?? '')
+  const [category, setCategory] = useState(review?.category ?? '')
   const [content, setContent] = useState(review?.content ?? '')
   const [affiliateLinks, setAffiliateLinks] = useState<AffiliateLink[]>(initialAffiliateLinks(review))
 
@@ -145,7 +155,30 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
             <Input label="Product Name" name="productName" required defaultValue={review?.productName} placeholder="e.g. Blade 98 v8" />
             <Input label="Brand" name="brand" required defaultValue={review?.brand} placeholder="e.g. Wilson" />
           </div>
-          <Select label="Category" name="category" required options={categoryOptions} defaultValue={review?.category} placeholder="Select category" />
+          <Select
+            label="Category"
+            name="category"
+            required
+            options={categoryOptions}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            placeholder="Select category"
+          />
+          {category && (
+            <div className="rounded-xl border border-lime-200 bg-lime-50/70 p-4">
+              <p className="text-sm font-semibold text-navy-900 mb-2">{category} review page structure</p>
+              <div className="flex flex-wrap gap-2">
+                {(reviewTemplateHints[category] ?? []).map((item) => (
+                  <span key={item} className="rounded-full bg-white border border-lime-200 px-3 py-1 text-xs font-medium text-lime-800">
+                    {item}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-3 text-xs text-gray-600">
+                The public review page uses this category template automatically. Use the title, image, excerpt and verdict fields for the review-specific opinion. For a fully custom review, send the notes here and we can add a specific template for that product.
+              </p>
+            </div>
+          )}
           <Textarea label="Short excerpt" name="excerpt" required defaultValue={review?.excerpt} rows={2} placeholder="1-2 sentence summary shown in listings" />
           <Input label="Cover image URL (optional)" name="coverImage" defaultValue={review?.coverImage ?? ''} placeholder="/images/reviews/example.jpg" />
           <Input label="Rating (1-10, optional/internal)" name="rating" type="number" min={1} max={10} defaultValue={review?.rating} placeholder="e.g. 8" />

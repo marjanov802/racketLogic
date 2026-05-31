@@ -21,10 +21,10 @@ import {
 const services = [
   {
     icon: BookOpen,
-    title: 'Free Articles',
-    description: 'Free guides on string tension, racket specs, shoe choice, warm-ups and more. No account needed.',
+    title: 'Learn',
+    description: 'Free guides on string tension, racket specs, shoe choice, warm-ups and more. Coming soon.',
     href: '/learn',
-    cta: 'Start Reading',
+    cta: 'Coming Soon',
     highlight: true,
   },
   {
@@ -37,9 +37,9 @@ const services = [
   {
     icon: BookOpen,
     title: 'Playbooks',
-    description: 'Paid PDF guides on strings, rackets, shoes, tactics, warm-ups and nutrition. Buy exactly what you need.',
+    description: 'Paid PDF guides on strings, rackets, shoes, tactics, warm-ups and nutrition. Coming soon.',
     href: '/playbooks',
-    cta: 'View Playbooks',
+    cta: 'Coming Soon',
   },
   {
     icon: Zap,
@@ -58,8 +58,8 @@ const services = [
 ]
 
 const howItWorks = [
-  { step: '01', title: 'Start with the free articles', description: 'No account needed. Read guides on strings, rackets, shoes, warm-ups and tactics - wherever you are in your game.' },
-  { step: '02', title: 'Go deeper with a playbook', description: 'When a free article leaves you wanting more, the playbook covers the full picture with recommendations and decision frameworks.' },
+  { step: '01', title: 'Start with stringing support', description: 'Book a restring or ask for guidance on strings and tension while the knowledge library is being prepared.' },
+  { step: '02', title: 'Learn section coming soon', description: 'Free guides on strings, rackets, shoes, warm-ups and tactics are being built so players can make better setup decisions.' },
   { step: '03', title: 'Read reviews before you buy', description: 'Honest verdicts on rackets, strings and shoes before spending money on kit that might not suit your game.' },
   { step: '04', title: 'Use the Central London handover', description: 'Once you know what strings and tension suit your game, hand over your racket around London Bridge, Bank or Blackfriars on Tuesday, Wednesday or Thursday.' },
 ]
@@ -114,7 +114,7 @@ function Hero() {
           <div className="flex flex-wrap gap-4 mb-16">
             <Link href="/learn">
               <button className="group inline-flex items-center gap-2 px-8 py-3.5 bg-lime-500 text-navy-950 font-semibold rounded hover:bg-lime-400 transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,174,85,0.4)] text-sm tracking-wide">
-                Start Reading Free
+                Learn Coming Soon
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
@@ -127,7 +127,7 @@ function Hero() {
 
           {/* Social proof */}
           <div className="flex items-center gap-6 border-t border-white/5 pt-8">
-            {[['Free Articles', 'No account needed'], ['Playbooks', 'Practical PDF guides'], ['London Handover', 'Tue-Thu central pickup']].map(([label, sub]) => (
+            {[['Learn', 'Coming soon'], ['Playbooks', 'Coming soon'], ['London Handover', 'Tue-Thu central pickup']].map(([label, sub]) => (
               <div key={label} className="text-center">
                 <div className="text-sm font-semibold text-lime-300">{label}</div>
                 <div className="text-xs text-gray-500 mt-0.5">{sub}</div>
@@ -216,10 +216,10 @@ function WhatWeDo() {
               </div>
               <h3 className="font-serif text-xl font-bold text-white mb-3">Tennis Knowledge</h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-5">
-                Free articles, honest gear reviews and in-depth playbooks on strings, rackets, shoes, warm-ups, tactics and nutrition. The information every club player needs, written clearly.
+                Free articles and in-depth playbooks on strings, rackets, shoes, warm-ups, tactics and nutrition are coming soon. The aim is simple tennis information written clearly.
               </p>
               <ul className="space-y-2">
-                {['Free articles - no account needed', 'Honest gear reviews', 'Practical PDF playbooks', 'String, racket and shoe guides'].map((item) => (
+                {['Learn section coming soon', 'Honest gear reviews', 'Practical PDF playbooks coming soon', 'String, racket and shoe guides'].map((item) => (
                   <li key={item} className="flex items-center gap-2.5 text-sm text-gray-300">
                     <Check className="w-3.5 h-3.5 text-lime-400 flex-shrink-0" />
                     {item}
@@ -266,7 +266,7 @@ function Services() {
             <div className="h-px w-8 bg-lime-500/50" />
           </div>
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy-900 mb-4">Everything in one place</h2>
-          <p className="text-gray-500 text-lg max-w-xl mx-auto">Free knowledge first. Paid guides, reviews and stringing when you're ready to go deeper.</p>
+          <p className="text-gray-500 text-lg max-w-xl mx-auto">Stringing is available now. Learn articles and playbooks are being prepared.</p>
         </AnimateIn>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -345,11 +345,11 @@ function FeaturedPlaybooks() {
               <div className="h-px w-8 bg-lime-500/50" />
               <span className="text-xs tracking-[0.3em] text-lime-600 uppercase font-medium">Playbooks</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy-900 mb-2">Featured guides</h2>
-            <p className="text-gray-500">Practical knowledge. Instantly downloadable.</p>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy-900 mb-2">Playbooks coming soon</h2>
+            <p className="text-gray-500">Practical tennis setup guides are being prepared.</p>
           </div>
           <Link href="/playbooks" className="hidden md:flex items-center gap-1.5 text-sm font-medium text-lime-600 hover:text-lime-500 transition-colors group">
-            All playbooks <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            Coming soon <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </AnimateIn>
 
@@ -369,9 +369,9 @@ function FeaturedPlaybooks() {
                     <h3 className="font-serif font-bold text-navy-900 mb-2 group-hover:text-navy-800 transition-colors">{pb.title}</h3>
                     <p className="text-sm text-gray-500 mb-5 leading-relaxed">{pb.description}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-xl font-bold text-navy-900">{pb.price}</span>
+                      <span className="text-sm font-semibold text-navy-900 rounded-full bg-lime-100 text-lime-800 px-3 py-1">Coming soon</span>
                       <span className="text-xs font-semibold text-lime-600 flex items-center gap-1 group-hover:gap-1.5 transition-all">
-                        View guide <ChevronRight className="w-3 h-3" />
+                        Preview <ChevronRight className="w-3 h-3" />
                       </span>
                     </div>
                   </div>
