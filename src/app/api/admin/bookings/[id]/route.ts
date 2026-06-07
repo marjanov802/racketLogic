@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { resend, FROM_EMAIL } from '@/lib/resend'
 
@@ -52,5 +53,24 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   } catch (error) {
     console.error('Update booking error:', error)
     return NextResponse.json({ error: 'Failed to update booking' }, { status: 500 })
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  if (!await requireAdmin()) {
+    return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  }
+
+  const { id } = await params
+
+  try {
+    await prisma.booking.delete({ where: { id } })
+    revalidatePath('/admin/bookings')
+    revalidatePath('/admin')
+    revalidatePath('/admin/revenue')
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Delete booking error:', error)
+    return NextResponse.json({ error: 'Failed to delete booking' }, { status: 500 })
   }
 }

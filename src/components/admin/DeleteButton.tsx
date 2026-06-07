@@ -8,9 +8,11 @@ import { toast } from 'sonner'
 interface Props {
   endpoint: string   // e.g. /api/admin/articles/abc123
   label: string      // e.g. "String tension explained"
+  redirectTo?: string
+  text?: string
 }
 
-export function DeleteButton({ endpoint, label }: Props) {
+export function DeleteButton({ endpoint, label, redirectTo, text = 'Delete' }: Props) {
   const [confirming, setConfirming] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -18,12 +20,32 @@ export function DeleteButton({ endpoint, label }: Props) {
   async function handleDelete() {
     setLoading(true)
     try {
-      const res = await fetch(endpoint, { method: 'DELETE' })
-      if (!res.ok) throw new Error()
+      const res = await fetch(endpoint, {
+        method: 'DELETE',
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' },
+      })
+
+      if (!res.ok) {
+        let message = 'Failed to delete. Please try again.'
+        try {
+          const body = await res.json()
+          if (body?.error) message = body.error
+        } catch {}
+        throw new Error(message)
+      }
+
       toast.success(`Deleted "${label}"`)
-      router.refresh()
-    } catch {
-      toast.error('Failed to delete. Please try again.')
+      if (redirectTo) {
+        router.push(redirectTo)
+        router.refresh()
+      } else {
+        router.refresh()
+      }
+      setLoading(false)
+      setConfirming(false)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to delete. Please try again.')
       setLoading(false)
       setConfirming(false)
     }
@@ -34,6 +56,7 @@ export function DeleteButton({ endpoint, label }: Props) {
       <div className="flex items-center gap-2">
         <span className="text-xs text-gray-500">Sure?</span>
         <button
+          type="button"
           onClick={handleDelete}
           disabled={loading}
           className="text-xs font-semibold text-red-600 hover:text-red-700 disabled:opacity-50"
@@ -41,6 +64,7 @@ export function DeleteButton({ endpoint, label }: Props) {
           {loading ? 'Deleting…' : 'Yes, delete'}
         </button>
         <button
+          type="button"
           onClick={() => setConfirming(false)}
           className="text-xs text-gray-400 hover:text-gray-600"
         >
@@ -52,11 +76,13 @@ export function DeleteButton({ endpoint, label }: Props) {
 
   return (
     <button
+      type="button"
       onClick={() => setConfirming(true)}
-      className="text-gray-400 hover:text-red-500 transition-colors p-1 rounded"
+      className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-600 hover:text-red-700 transition-colors px-2 py-1 rounded hover:bg-red-50"
       title={`Delete "${label}"`}
     >
       <Trash2 className="w-3.5 h-3.5" />
+      {text}
     </button>
   )
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 
 async function requireAdmin() {
@@ -22,7 +23,13 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   if (!await requireAdmin()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   const { id } = await params
   try {
-    await prisma.reviewArticle.delete({ where: { id } })
+    const review = await prisma.reviewArticle.delete({ where: { id } })
+    revalidatePath('/admin/reviews')
+    revalidatePath('/reviews')
+    revalidatePath(`/reviews/${review.slug}`)
     return NextResponse.json({ success: true })
-  } catch { return NextResponse.json({ error: 'Failed' }, { status: 500 }) }
+  } catch (error) {
+    console.error('Delete review error:', error)
+    return NextResponse.json({ error: 'Failed to delete review' }, { status: 500 })
+  }
 }

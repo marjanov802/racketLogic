@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { ReviewForm } from '@/components/admin/ReviewForm'
+import { Card } from '@/components/ui/Card'
+import { DeleteButton } from '@/components/admin/DeleteButton'
 
 interface PageProps { params: Promise<{ id: string }> }
 
@@ -32,6 +34,18 @@ export default async function EditReviewPage({ params }: PageProps) {
         mainDownside: review.mainDownside ?? '', verdict: review.verdict ?? '',
         published: review.published, featured: review.featured,
       }} />
+
+      <Card className="mt-8 border-red-100 bg-red-50/40">
+        <h3 className="font-bold text-red-900 mb-2">Delete review</h3>
+        <p className="text-sm text-red-700 mb-4">
+          Remove this review permanently from the Blog.
+        </p>
+        <DeleteButton
+          endpoint={`/api/admin/reviews/${review.id}`}
+          label={review.title}
+          redirectTo="/admin/reviews"
+        />
+      </Card>
     </div>
   )
 }

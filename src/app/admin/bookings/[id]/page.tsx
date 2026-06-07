@@ -6,6 +6,7 @@ import { formatDate } from '@/lib/utils'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { BookingStatusForm } from '@/components/admin/BookingStatusForm'
+import { DeleteButton } from '@/components/admin/DeleteButton'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -126,6 +127,18 @@ export default async function AdminBookingDetailPage({ params }: PageProps) {
         currentAdminNotes={booking.adminNotes ?? ''}
         currentPrice={booking.price ? String(booking.price) : ''}
       />
+
+      <Card className="mt-6 border-red-100 bg-red-50/40">
+        <h3 className="font-bold text-red-900 mb-2">Delete booking</h3>
+        <p className="text-sm text-red-700 mb-4">
+          Remove this stringing job permanently from the admin system.
+        </p>
+        <DeleteButton
+          endpoint={`/api/admin/bookings/${booking.id}`}
+          label={`${booking.customerName} booking`}
+          redirectTo="/admin/bookings"
+        />
+      </Card>
     </div>
   )
 }

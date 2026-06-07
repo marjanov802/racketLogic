@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { formatDate, formatPrice } from '@/lib/utils'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
+import { DeleteButton } from '@/components/admin/DeleteButton'
 
 const statusVariants: Record<string, 'default' | 'lime' | 'navy' | 'green' | 'red' | 'yellow' | 'gray'> = {
   NEW: 'yellow', CONFIRMED: 'navy', IN_PROGRESS: 'lime',
@@ -66,8 +67,12 @@ export default async function AdminBookingsPage() {
                     </Badge>
                   </td>
                   <td className="px-4 py-3">
-                    <Link href={`/admin/bookings/${b.id}`} className="text-lime-600 hover:underline text-xs font-medium">
-                      View</Link>
+                    <div className="flex items-center gap-3">
+                      <Link href={`/admin/bookings/${b.id}`} className="text-lime-600 hover:underline text-xs font-medium">
+                        View
+                      </Link>
+                      <DeleteButton endpoint={`/api/admin/bookings/${b.id}`} label={`${b.customerName} booking`} />
+                    </div>
                   </td>
                 </tr>
               ))}
