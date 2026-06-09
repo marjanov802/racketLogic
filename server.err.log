@@ -1,89 +1,10 @@
 ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
 [browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
+[browser] Encountered two children with the same key, `Blue`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
 [browser] Clerk: The prop "afterSignInUrl" is deprecated and should be replaced with the new "fallbackRedirectUrl" or "forceRedirectUrl" props instead. Learn more: https://clerk.com/docs/guides/custom-redirects#redirect-url-props (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
-[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
-
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
-
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
-
-https://react.dev/link/hydration-mismatch
-
-  ...
-    <RedirectErrorBoundary router={{...}}>
-      <InnerLayoutRouter url="/reviews/l..." tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
-        <SegmentViewNode type="layout" pagePath="(public)/l...">
-          <SegmentTrieNode>
-          <script>
-          <script>
-          <script>
-          <PublicLayout>
-            <div className="min-h-scre...">
-              <Navbar>
-                <header className="sticky top...">
-                  <div className="container-lg">
-                    <div className="flex items...">
-                      <LinkComponent>
-                      <nav>
-                      <div className="hidden lg:...">
-                        <LinkComponent>
-                        <SignedIn>
-                        <SignedOut>
-                          <LinkComponent href="/sign-in">
-+                           <a
-+                             ref={function}
-+                             onClick={function onClick}
-+                             onMouseEnter={function onMouseEnter}
-+                             onTouchStart={function onTouchStart}
-+                             href="/sign-in"
-+                           >
-                      ...
-                  ...
-              ...
-      ...
-
-    at <unknown> (https://react.dev/link/hydration-mismatch)
-    at a (<anonymous>)
-    at Navbar (src/components/layout/Navbar.tsx:90:15)
-    at PublicLayout (src\app\(public)\layout.tsx:7:7)
-  88 |             </SignedIn>
-  89 |             <SignedOut>
-> 90 |               <Link href="/sign-in">
-     |               ^
-  91 |                 <button className="text-sm font-medium text-gray-400 hover:text-white tran...
-  92 |                   Sign In
-  93 |                 </button>
+[browser] Encountered two children with the same key, `Blue`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `Blue`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
 [browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
 [browser] Clerk: The prop "afterSignInUrl" is deprecated and should be replaced with the new "fallbackRedirectUrl" or "forceRedirectUrl" props instead. Learn more: https://clerk.com/docs/guides/custom-redirects#redirect-url-props (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
-[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
-
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
-
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
-
-https://react.dev/link/hydration-mismatch
-
-  ...
-    <ClerkProviderBase publishableKey="pk_test_bm..." proxyUrl="" domain="" isSatellite={false} signInUrl="/sign-in" ...>
-      <ClerkContextProvider initialState={null} isomorphicClerkOptions={{...}}>
-        <OrganizationProvider organization={undefined}>
-          <SWRConfigCompat swrConfig={undefined}>
-            <SWRConfig value={undefined}>
-              <__experimental_CheckoutProvider value={undefined}>
-                <RouterTelemetry>
-                <ClerkJSScript>
-                <html lang="en-GB">
-                  <body
--                   __processed_5c809584-dbca-497d-bcc4-a5a3a686e772__="true"
--                   bis_register="W3sibWFzdGVyIjp0cnVlLCJleHRlbnNpb25JZCI6ImVwcGlvY2VtaG1ubGJoanBsY2drb2ZjaWllZ29tY29u..."
-                  >
- 
-[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
+[browser] Clerk: The prop "afterSignInUrl" is deprecated and should be replaced with the new "fallbackRedirectUrl" or "forceRedirectUrl" props instead. Learn more: https://clerk.com/docs/guides/custom-redirects#redirect-url-props (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)

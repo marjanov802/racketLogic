@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import fs from 'node:fs'
+import path from 'node:path'
 import { ArrowLeft, ArrowRight, Check, ExternalLink } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
@@ -214,6 +216,7 @@ type CategoryConfig = {
   recommendedFor: string[]
   lessIdealFor: string[]
   colourways?: Colourway[]
+  colourwayFolder?: string
   finalIntro: string
 }
 
@@ -352,6 +355,7 @@ const reviewConfigOverrides: Record<string, CategoryConfig> = {
       { name: 'Seasonal Blue', image: '/images/reviews/lacoste-ag-lt23.jpeg' },
       { name: 'Seasonal Green', image: '/images/reviews/lacoste-ag-lt23.jpeg' },
     ],
+    colourwayFolder: '/images/reviews/Shoes/Lacoste AG-LT23',
     finalIntro: 'This is strictly my opinion from wearing the shoe. I think the Lacoste AG-LT23 feels excellent on foot: light, secure, breathable and very comfortable. The problem is durability. The outsole and grip wear too quickly, especially with sliding, so the shoe feels better than it lasts.',
   },
 }
@@ -431,14 +435,29 @@ function getAffiliateLinks(value: unknown, fallbackUrl: string | null): Affiliat
   return []
 }
 
+function isUsableMediaUrl(value: string | undefined) {
+  if (!value) return false
+  const trimmed = value.trim().replace(/^"|"$/g, '')
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return true
+  if (!trimmed.startsWith('/')) return false
+
+  const publicRoot = path.resolve(process.cwd(), 'public')
+  const mediaPath = path.resolve(publicRoot, decodeURI(trimmed).replace(/^\//, ''))
+  return mediaPath.startsWith(publicRoot) && fs.existsSync(mediaPath)
+}
+
+function cleanMediaUrl(value: string) {
+  return value.trim().replace(/^"|"$/g, '')
+}
+
 function getColourways(value: unknown, fallback: Colourway[] | undefined): DisplayColourway[] | undefined {
   if (Array.isArray(value)) {
     return value
       .filter((item): item is Colourway => typeof item === 'object' && item !== null)
-      .filter((colourway) => Boolean(colourway.name) && Boolean(colourway.image))
+      .filter((colourway) => Boolean(colourway.name) && isUsableMediaUrl(colourway.image))
       .map((colourway) => ({
         name: colourway.name!,
-        image: colourway.image!,
+        image: cleanMediaUrl(colourway.image!),
         links: Array.isArray(colourway.links)
           ? colourway.links.filter((link) => Boolean(link.url))
           : [],
@@ -446,12 +465,66 @@ function getColourways(value: unknown, fallback: Colourway[] | undefined): Displ
   }
 
   return fallback
-    ?.filter((colourway) => Boolean(colourway.name) && Boolean(colourway.image))
+    ?.filter((colourway) => Boolean(colourway.name) && isUsableMediaUrl(colourway.image))
     .map((colourway) => ({
       name: colourway.name!,
-      image: colourway.image!,
+      image: cleanMediaUrl(colourway.image!),
       links: Array.isArray(colourway.links) ? colourway.links.filter((link) => Boolean(link.url)) : [],
     }))
+}
+
+const imageExtensions = new Set(['.avif', '.jpeg', '.jpg', '.png', '.webp'])
+
+function normalisePublicFolderPath(folderPath: string | null | undefined) {
+  if (!folderPath) return null
+  const cleaned = folderPath.trim().replace(/\\/g, '/').replace(/^public\//, '')
+  if (!cleaned) return null
+
+  const publicPath = cleaned.startsWith('/') ? cleaned : `/${cleaned}`
+  if (publicPath.includes('..')) return null
+
+  return publicPath.replace(/\/+$/, '')
+}
+
+function labelFromFilename(filename: string) {
+  return filename
+    .replace(/\.[^.]+$/, '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function getColourwaysFromFolder(folderPath: string | null | undefined): DisplayColourway[] {
+  const publicPath = normalisePublicFolderPath(folderPath)
+  if (!publicPath) return []
+
+  const publicRoot = path.resolve(process.cwd(), 'public')
+  const resolvedFolder = path.resolve(publicRoot, publicPath.replace(/^\//, ''))
+  if (!resolvedFolder.startsWith(publicRoot)) return []
+  if (!fs.existsSync(resolvedFolder)) return []
+
+  return fs
+    .readdirSync(resolvedFolder, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && imageExtensions.has(path.extname(entry.name).toLowerCase()))
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }))
+    .map((entry) => ({
+      name: labelFromFilename(entry.name),
+      image: encodeURI(`${publicPath}/${entry.name}`),
+      links: [],
+    }))
+}
+
+function mergeColourways(primary: DisplayColourway[] | undefined, folderItems: DisplayColourway[]) {
+  const items = [...(primary ?? []), ...folderItems]
+  const seen = new Set<string>()
+
+  return items.filter((item) => {
+    const key = item.image.toLowerCase()
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
 }
 
 function getGallery(value: unknown): Required<GalleryItem>[] {
@@ -459,11 +532,11 @@ function getGallery(value: unknown): Required<GalleryItem>[] {
 
   return value
     .filter((item): item is GalleryItem => typeof item === 'object' && item !== null)
-    .filter((item) => Boolean(item.url))
+    .filter((item) => isUsableMediaUrl(item.url))
     .map((item) => ({
       type: item.type === 'video' ? 'video' : 'image',
       label: item.label ?? '',
-      url: item.url!,
+      url: cleanMediaUrl(item.url!),
     }))
 }
 
@@ -501,7 +574,11 @@ export default async function ReviewPage({ params }: PageProps) {
   const goodFit = config.recommendedFor
   const lessFit = config.lessIdealFor
   const extraSections = reviewSectionOverrides[review.slug] ?? categorySections[review.category] ?? categorySections.Accessories
-  const colourways = getColourways(review.colourways, config.colourways)
+  const folderColourways = getColourwaysFromFolder(review.colourwayFolder ?? config.colourwayFolder)
+  const colourways = mergeColourways(
+    getColourways(review.colourways, folderColourways.length > 0 ? undefined : config.colourways),
+    folderColourways
+  )
   const gallery = getGallery(review.gallery)
 
   return (
@@ -678,7 +755,7 @@ export default async function ReviewPage({ params }: PageProps) {
                   <h2 className="text-2xl font-serif font-bold text-navy-900 mb-5">Colourways in this model</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {colourways.map((colourway) => (
-                      <div key={colourway.name} className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:border-lime-200 hover:shadow-md transition-all duration-300">
+                      <div key={colourway.image} className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:border-lime-200 hover:shadow-md transition-all duration-300">
                         <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
                           <img
                             src={colourway.image}

@@ -42,6 +42,7 @@ interface ReviewData {
   affiliateUrl?: string
   affiliateLinks?: AffiliateLink[]
   colourways?: Colourway[]
+  colourwayFolder?: string
   gallery?: GalleryItem[]
   coverImage?: string
   rating?: string
@@ -242,6 +243,7 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
       affiliateUrl: firstAffiliateUrl,
       affiliateLinks: cleanAffiliateLinks,
       colourways: cleanColourways,
+      colourwayFolder: data.get('colourwayFolder'),
       gallery: cleanGallery,
       coverImage: data.get('coverImage'),
       rating: data.get('rating') ? parseInt(data.get('rating') as string) : null,
@@ -309,6 +311,15 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
           )}
           <Textarea label="Short excerpt" name="excerpt" required defaultValue={review?.excerpt} rows={2} placeholder="1-2 sentence summary shown in listings" />
           <Input label="Cover image URL (optional)" name="coverImage" defaultValue={review?.coverImage ?? ''} placeholder="/images/reviews/example.jpg" />
+          <Input
+            label="Colourway folder path (optional)"
+            name="colourwayFolder"
+            defaultValue={review?.colourwayFolder ?? ''}
+            placeholder="/images/reviews/Shoes/Lacoste AG-LT23"
+          />
+          <p className="-mt-3 text-xs text-gray-500">
+            If this is filled in, the public review page will automatically show every image inside that folder. The folder must be inside <span className="font-mono">public</span>.
+          </p>
           <Input label="Rating (1-10, optional/internal)" name="rating" type="number" min={1} max={10} defaultValue={review?.rating} placeholder="e.g. 8" />
         </div>
       </Card>
@@ -390,7 +401,7 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
           <div>
             <h3 className="font-bold text-navy-900">Colourway Images</h3>
             <p className="text-sm text-gray-500 mt-1">
-              Optional. Useful for shoe reviews. Add only the colourways you need, then add retailer links for the shops that actually sell that colour.
+              Optional. Use this when you need colour-specific affiliate links. If you only need images, use the folder path above instead.
             </p>
             <p className="text-xs text-gray-400 mt-1">
               Example path: <span className="font-mono">/images/reviews/lacoste-ag-lt23.jpeg</span>

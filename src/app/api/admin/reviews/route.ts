@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
         excerpt: body.excerpt, content: body.content, affiliateUrl: body.affiliateUrl,
         affiliateLinks: body.affiliateLinks,
         colourways: body.colourways,
+        colourwayFolder: body.colourwayFolder,
         gallery: body.gallery,
         coverImage: body.coverImage,
         rating: body.rating, whoIsItFor: body.whoIsItFor, whoIsItNotFor: body.whoIsItNotFor,

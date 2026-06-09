@@ -141,6 +141,7 @@ model ReviewArticle {
   affiliateUrl String?
   affiliateLinks Json?
   colourways Json?
+  colourwayFolder String?
   gallery Json?
   rating       Int?     // 1-10
   whoIsItFor   String?
