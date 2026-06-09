@@ -579,6 +579,8 @@ export default async function ReviewPage({ params }: PageProps) {
     getColourways(review.colourways, folderColourways.length > 0 ? undefined : config.colourways),
     folderColourways
   )
+  const previewColourways = colourways.slice(0, 8)
+  const hiddenColourwayCount = Math.max(0, colourways.length - previewColourways.length)
   const gallery = getGallery(review.gallery)
 
   return (
@@ -751,48 +753,91 @@ export default async function ReviewPage({ params }: PageProps) {
 
               {colourways && colourways.length > 0 && (
                 <Card>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-2">Range</p>
-                  <h2 className="text-2xl font-serif font-bold text-navy-900 mb-5">Colourways in this model</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {colourways.map((colourway) => (
-                      <div key={colourway.image} className="group rounded-2xl border border-gray-100 bg-white overflow-hidden hover:border-lime-200 hover:shadow-md transition-all duration-300">
-                        <div className="aspect-square bg-gray-50 flex items-center justify-center p-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-5">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-2">Range</p>
+                      <h2 className="text-2xl font-serif font-bold text-navy-900">Colourways</h2>
+                    </div>
+                    <p className="text-sm text-gray-500">
+                      {colourways.length} shown from this model range
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+                    {previewColourways.map((colourway) => (
+                      <figure key={colourway.image} className="group min-w-0">
+                        <div className="aspect-square rounded-xl border border-gray-100 bg-gray-50 flex items-center justify-center p-2 overflow-hidden group-hover:border-lime-200 transition-colors">
                           <img
                             src={colourway.image}
                             alt={`${review.productName} ${colourway.name}`}
                             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>
-                        <div className="border-t border-gray-100 px-3 py-3">
-                          <p className="text-sm font-semibold text-navy-900 text-center">{colourway.name}</p>
-                          {colourway.links && colourway.links.length > 0 ? (
-                            <div className="mt-3 space-y-2">
-                              {colourway.links.map((link, index) => (
-                                <a
-                                  key={`${link.url}-${index}`}
-                                  href={link.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer sponsored"
-                                  className="flex items-center justify-between gap-3 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-xs font-semibold text-navy-900 hover:border-lime-300 hover:bg-lime-50/40 transition-colors"
-                                >
-                                  <span>{link.retailer || 'Retailer'}</span>
-                                  <span className="inline-flex items-center gap-1 text-lime-700">
-                                    {link.price || 'Check availability'} <ExternalLink className="w-3 h-3" />
-                                  </span>
-                                </a>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="mt-2 text-center text-xs text-gray-400">
-                              No colour-specific links added.
-                            </p>
-                          )}
-                        </div>
-                      </div>
+                        <figcaption className="mt-1 truncate text-center text-[11px] font-medium text-gray-500">
+                          {colourway.name}
+                        </figcaption>
+                      </figure>
                     ))}
                   </div>
+
+                  <details className="group mt-5 rounded-2xl border border-gray-100 bg-white">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 text-sm font-semibold text-navy-900 hover:bg-gray-50">
+                      <span>
+                        View all colourways
+                        {hiddenColourwayCount > 0 && (
+                          <span className="ml-2 font-normal text-gray-500">
+                            +{hiddenColourwayCount} more
+                          </span>
+                        )}
+                      </span>
+                      <span className="text-lime-700 transition-transform group-open:rotate-90">
+                        <ArrowRight className="w-4 h-4" />
+                      </span>
+                    </summary>
+
+                    <div className="border-t border-gray-100 p-4">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {colourways.map((colourway) => (
+                          <div key={colourway.image} className="group/card rounded-xl border border-gray-100 bg-gray-50 overflow-hidden hover:border-lime-200 hover:shadow-sm transition-all duration-300">
+                            <div className="aspect-[4/3] bg-white flex items-center justify-center p-3">
+                              <img
+                                src={colourway.image}
+                                alt={`${review.productName} ${colourway.name}`}
+                                className="w-full h-full object-contain group-hover/card:scale-105 transition-transform duration-300"
+                              />
+                            </div>
+                            <div className="border-t border-gray-100 px-3 py-3">
+                              <p className="text-sm font-semibold text-navy-900">{colourway.name}</p>
+                              {colourway.links && colourway.links.length > 0 && (
+                                <div className="mt-3 space-y-2">
+                                  {colourway.links.map((link, index) => (
+                                    <a
+                                      key={`${link.url}-${index}`}
+                                      href={link.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer sponsored"
+                                      className="flex items-center justify-between gap-3 rounded-lg border border-gray-100 bg-white px-3 py-2 text-xs font-semibold text-navy-900 hover:border-lime-300 hover:bg-lime-50/40 transition-colors"
+                                    >
+                                      <span>{link.retailer || 'Retailer'}</span>
+                                      <span className="inline-flex items-center gap-1 text-lime-700">
+                                        {link.price || 'Check availability'} <ExternalLink className="w-3 h-3" />
+                                      </span>
+                                    </a>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="mt-4 text-xs text-gray-500">
+                        Colourways, sizes and stock change regularly by retailer. Use colour-specific links where possible, then check your size before buying.
+                      </p>
+                    </div>
+                  </details>
+
                   <p className="mt-4 text-xs text-gray-500">
-                    Colourways, sizes and stock change regularly by retailer. Use colour-specific links where possible, then check your size before buying.
+                    This section is visual first. Open the full range if you want to compare every colourway.
                   </p>
                 </Card>
               )}
