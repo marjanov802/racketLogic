@@ -138,6 +138,7 @@ export default async function AdminPage() {
         <h2 className="font-bold text-navy-900 mb-4">Quick actions</h2>
         <div className="flex flex-wrap gap-3">
           {[
+            { href: '/admin/home', label: 'Edit Home Page' },
             { href: '/admin/playbooks/new', label: '+ New Playbook' },
             { href: '/admin/reviews/new', label: '+ New Review' },
             { href: '/admin/articles/new', label: '+ New Article' },

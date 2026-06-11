@@ -2,6 +2,8 @@
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { AnimateIn } from '@/components/ui/AnimateIn'
+import { prisma } from '@/lib/prisma'
+import { mergeHomeContent, type HomeContent } from '@/lib/home-content'
 import {
   BookOpen,
   Dumbbell,
@@ -64,11 +66,76 @@ const howItWorks = [
   { step: '04', title: 'Use the Central London handover', description: 'Once you know what strings and tension suit your game, hand over your racket around London Bridge, Bank or Blackfriars on Tuesday, Wednesday or Thursday.' },
 ]
 
-const featuredPlaybooks = [
-  { title: 'String Setup Playbook', description: 'Poly vs multifilament, tension explained, strings for spin, control and comfort.', price: 'GBP 7.99', category: 'Equipment', href: '/playbooks/string-setup' },
-  { title: 'Racket Buying Playbook', description: 'Head size, weight, balance, swingweight and string pattern explained clearly.', price: 'GBP 9.99', category: 'Equipment', href: '/playbooks/racket-buying' },
-  { title: 'Match Tactics Playbook', description: 'Singles and doubles tactics, serve patterns, return tactics and tie-break strategy.', price: 'GBP 9.99', category: 'Matchplay', href: '/playbooks/match-tactics' },
+const fallbackFeaturedPlaybooks = [
+  { title: 'String Setup Playbook', description: 'Poly vs multifilament, tension explained, strings for spin, control and comfort.', meta: 'Coming soon', category: 'Equipment', href: '/playbooks/string-setup' },
+  { title: 'Racket Buying Playbook', description: 'Head size, weight, balance, swingweight and string pattern explained clearly.', meta: 'Coming soon', category: 'Equipment', href: '/playbooks/racket-buying' },
+  { title: 'Match Tactics Playbook', description: 'Singles and doubles tactics, serve patterns, return tactics and tie-break strategy.', meta: 'Coming soon', category: 'Matchplay', href: '/playbooks/match-tactics' },
 ]
+
+type FeaturedHomeItem = {
+  title: string
+  description: string
+  category: string
+  href: string
+  image?: string | null
+  meta?: string
+}
+
+async function getHomePageData() {
+  try {
+    const [setting, reviews, articles, playbooks] = await Promise.all([
+      prisma.siteSetting.findUnique({ where: { key: 'home' } }),
+      prisma.reviewArticle.findMany({
+        where: { published: true, featured: true },
+        orderBy: { updatedAt: 'desc' },
+        take: 3,
+        select: { title: true, slug: true, excerpt: true, category: true, brand: true, coverImage: true },
+      }),
+      prisma.learnArticle.findMany({
+        where: { published: true, featured: true },
+        orderBy: { updatedAt: 'desc' },
+        take: 3,
+        select: { title: true, slug: true, excerpt: true, category: true, coverImage: true, readingTime: true },
+      }),
+      prisma.playbook.findMany({
+        where: { published: true, featured: true, isBundle: false },
+        orderBy: { updatedAt: 'desc' },
+        take: 3,
+        select: { title: true, slug: true, description: true, category: true, coverImage: true, price: true },
+      }),
+    ])
+
+    return {
+      content: mergeHomeContent(setting?.value),
+      reviews: reviews.map((review): FeaturedHomeItem => ({
+        title: review.title,
+        description: review.excerpt,
+        category: review.category,
+        href: `/reviews/${review.slug}`,
+        image: review.coverImage,
+        meta: review.brand,
+      })),
+      articles: articles.map((article): FeaturedHomeItem => ({
+        title: article.title,
+        description: article.excerpt,
+        category: article.category,
+        href: `/learn/${article.slug}`,
+        image: article.coverImage,
+        meta: article.readingTime ? `${article.readingTime} min read` : 'Free article',
+      })),
+      playbooks: playbooks.map((playbook): FeaturedHomeItem => ({
+        title: playbook.title,
+        description: playbook.description,
+        category: playbook.category,
+        href: `/playbooks/${playbook.slug}`,
+        image: playbook.coverImage,
+        meta: `GBP ${Number(playbook.price).toFixed(2)}`,
+      })),
+    }
+  } catch {
+    return { content: mergeHomeContent(null), reviews: [], articles: [], playbooks: [] }
+  }
+}
 
 const trustPoints = [
   { icon: ShieldCheck, title: 'No generic opinions', description: 'Every recommendation is practical and based on real tennis experience, not marketing.' },
@@ -79,7 +146,7 @@ const trustPoints = [
 
 // Sections
 
-function Hero() {
+function Hero({ content }: { content: HomeContent }) {
   return (
     <section className="bg-navy-gradient text-white overflow-hidden relative min-h-[90vh] flex items-center">
       {/* Animated background orbs */}
@@ -97,30 +164,30 @@ function Hero() {
           {/* Eyebrow */}
           <div className="flex items-center gap-3 mb-8">
             <div className="h-px w-8 bg-lime-400/60" />
-            <span className="text-xs tracking-[0.3em] text-lime-400/80 uppercase font-medium">Tennis knowledge + Central London stringing</span>
+            <span className="text-xs tracking-[0.3em] text-lime-400/80 uppercase font-medium">{content.heroEyebrow}</span>
           </div>
 
           {/* Headline */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-[1.05] tracking-tight mb-8">
-            Learn your setup.{' '}
-            <span className="text-gradient italic">String it in London.</span>
+            {content.heroTitleStart}{' '}
+            <span className="text-gradient italic">{content.heroTitleAccent}</span>
           </h1>
 
           <p className="text-lg md:text-xl text-gray-400 leading-relaxed mb-10 max-w-xl font-light">
-            RacketLogic helps players understand strings, rackets and gear, then makes restringing easy with pickup and drop-off around London Bridge, Bank and Blackfriars on Tuesday, Wednesday and Thursday.
+            {content.heroSubtitle}
           </p>
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-4 mb-16">
-            <Link href="/learn">
+            <Link href={content.heroPrimaryHref}>
               <button className="group inline-flex items-center gap-2 px-8 py-3.5 bg-lime-500 text-navy-950 font-semibold rounded hover:bg-lime-400 transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,174,85,0.4)] text-sm tracking-wide">
-                Learn Coming Soon
+                {content.heroPrimaryLabel}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
-            <Link href="/stringing">
+            <Link href={content.heroSecondaryHref}>
               <button className="inline-flex items-center gap-2 px-8 py-3.5 border border-white/20 text-white font-medium rounded hover:border-lime-400/50 hover:text-lime-300 transition-all duration-300 text-sm tracking-wide">
-                Central London Stringing
+                {content.heroSecondaryLabel}
               </button>
             </Link>
           </div>
@@ -143,7 +210,7 @@ function Hero() {
   )
 }
 
-function LondonHandover() {
+function LondonHandover({ content }: { content: HomeContent }) {
   return (
     <section className="-mt-10 relative z-20">
       <div className="container-lg">
@@ -155,18 +222,18 @@ function LondonHandover() {
                   Main stringing advantage
                 </div>
                 <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight">
-                  Central London racket handover.
+                  {content.londonTitle}
                 </h2>
                 <p className="mt-4 text-sm text-gray-400 leading-relaxed">
-                  Learn what setup you need, then make the restring simple with pickup and drop-off where London players actually move through.
+                  {content.londonSubtitle}
                 </p>
               </div>
               <div className="p-8 md:p-10">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-7">
                   {[
-                    ['Areas', 'London Bridge, Bank, Blackfriars + nearby'],
-                    ['Days', 'Tuesday, Wednesday, Thursday'],
-                    ['Payment', 'Online, card or cash accepted'],
+                    ['Areas', content.londonAreas],
+                    ['Days', content.londonDays],
+                    ['Payment', content.londonPayment],
                   ].map(([label, value]) => (
                     <div key={label} className="rounded-2xl bg-gray-50 border border-gray-100 p-5">
                       <div className="text-xs font-semibold uppercase tracking-wider text-lime-600 mb-2">{label}</div>
@@ -335,7 +402,26 @@ function HowItWorks() {
   )
 }
 
-function FeaturedPlaybooks() {
+function FeaturedItems({
+  eyebrow,
+  title,
+  subtitle,
+  href,
+  linkLabel,
+  items,
+  fallback,
+}: {
+  eyebrow: string
+  title: string
+  subtitle: string
+  href: string
+  linkLabel: string
+  items: FeaturedHomeItem[]
+  fallback?: FeaturedHomeItem[]
+}) {
+  const displayItems = items.length > 0 ? items : fallback ?? []
+  if (displayItems.length === 0) return null
+
   return (
     <section className="section-padding bg-white">
       <div className="container-lg">
@@ -343,35 +429,41 @@ function FeaturedPlaybooks() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-lime-500/50" />
-              <span className="text-xs tracking-[0.3em] text-lime-600 uppercase font-medium">Playbooks</span>
+              <span className="text-xs tracking-[0.3em] text-lime-600 uppercase font-medium">{eyebrow}</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy-900 mb-2">Playbooks coming soon</h2>
-            <p className="text-gray-500">Practical tennis setup guides are being prepared.</p>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy-900 mb-2">{title}</h2>
+            <p className="text-gray-500">{subtitle}</p>
           </div>
-          <Link href="/playbooks" className="hidden md:flex items-center gap-1.5 text-sm font-medium text-lime-600 hover:text-lime-500 transition-colors group">
-            Coming soon <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          <Link href={href} className="hidden md:flex items-center gap-1.5 text-sm font-medium text-lime-600 hover:text-lime-500 transition-colors group">
+            {linkLabel} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </AnimateIn>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {featuredPlaybooks.map((pb, i) => (
-            <AnimateIn key={pb.title} delay={(i + 1) as 1 | 2 | 3}>
-              <Link href={pb.href} className="block group">
+          {displayItems.map((item, i) => (
+            <AnimateIn key={`${item.href}-${item.title}`} delay={(i + 1) as 1 | 2 | 3}>
+              <Link href={item.href} className="block group">
                 <div className="h-full rounded-2xl overflow-hidden border border-gray-100 hover:border-lime-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl bg-white">
                   <div className="h-44 bg-navy-gradient relative flex items-center justify-center overflow-hidden">
-                    <div className="absolute inset-0 bg-lime-500/5 group-hover:bg-lime-500/10 transition-all duration-500" />
-                    <BookOpen className="w-10 h-10 text-lime-400/70 group-hover:text-lime-300 transition-colors relative z-10" />
+                    {item.image ? (
+                      <img src={item.image} alt={item.title} className="h-full w-full object-contain bg-white p-4" />
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 bg-lime-500/5 group-hover:bg-lime-500/10 transition-all duration-500" />
+                        <BookOpen className="w-10 h-10 text-lime-400/70 group-hover:text-lime-300 transition-colors relative z-10" />
+                      </>
+                    )}
                     <div className="absolute bottom-3 left-4">
-                      <span className="text-xs tracking-widest text-lime-400/60 uppercase">{pb.category}</span>
+                      <span className="text-xs tracking-widest text-lime-400/80 uppercase">{item.category}</span>
                     </div>
                   </div>
                   <div className="p-6">
-                    <h3 className="font-serif font-bold text-navy-900 mb-2 group-hover:text-navy-800 transition-colors">{pb.title}</h3>
-                    <p className="text-sm text-gray-500 mb-5 leading-relaxed">{pb.description}</p>
+                    <h3 className="font-serif font-bold text-navy-900 mb-2 group-hover:text-navy-800 transition-colors">{item.title}</h3>
+                    <p className="text-sm text-gray-500 mb-5 leading-relaxed">{item.description}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-navy-900 rounded-full bg-lime-100 text-lime-800 px-3 py-1">Coming soon</span>
+                      <span className="text-sm font-semibold text-navy-900 rounded-full bg-lime-100 text-lime-800 px-3 py-1">{item.meta ?? 'Featured'}</span>
                       <span className="text-xs font-semibold text-lime-600 flex items-center gap-1 group-hover:gap-1.5 transition-all">
-                        Preview <ChevronRight className="w-3 h-3" />
+                        Open <ChevronRight className="w-3 h-3" />
                       </span>
                     </div>
                   </div>
@@ -423,7 +515,7 @@ function WhyTrust() {
   )
 }
 
-function FinalCTA() {
+function FinalCTA({ content }: { content: HomeContent }) {
   return (
     <section className="section-padding bg-white">
       <div className="container-lg">
@@ -438,15 +530,15 @@ function FinalCTA() {
             <div className="relative px-10 py-20 md:py-24 text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="h-px w-8 bg-lime-400/40" />
-                <span className="text-xs tracking-[0.3em] text-lime-400/70 uppercase font-medium">Get started</span>
+                <span className="text-xs tracking-[0.3em] text-lime-400/70 uppercase font-medium">{content.finalEyebrow}</span>
                 <div className="h-px w-8 bg-lime-400/40" />
               </div>
               <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-5 max-w-2xl mx-auto leading-tight">
-                Read. Learn. Play{' '}
-                <span className="text-gradient italic">smarter.</span>
+                {content.finalTitleStart}{' '}
+                <span className="text-gradient italic">{content.finalTitleAccent}</span>
               </h2>
               <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-                Start with a free article, go deeper with a playbook, or book a restring when you know exactly what you need.
+                {content.finalSubtitle}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link href="/learn">
@@ -476,17 +568,43 @@ function FinalCTA() {
 
 // Page
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { content, reviews, articles, playbooks } = await getHomePageData()
+
   return (
     <>
-      <Hero />
-      <LondonHandover />
+      <Hero content={content} />
+      <LondonHandover content={content} />
       <WhatWeDo />
       <Services />
+      <FeaturedItems
+        eyebrow="Blog"
+        title="Featured reviews"
+        subtitle="Personal, practical opinions on rackets, shoes, strings and gear."
+        href="/reviews"
+        linkLabel="All reviews"
+        items={reviews}
+      />
+      <FeaturedItems
+        eyebrow="Learn"
+        title="Featured free articles"
+        subtitle="Free tennis information from the admin article library."
+        href="/learn"
+        linkLabel="All articles"
+        items={articles}
+      />
       <HowItWorks />
-      <FeaturedPlaybooks />
+      <FeaturedItems
+        eyebrow="Playbooks"
+        title="Featured playbooks"
+        subtitle="Practical tennis setup guides selected from admin."
+        href="/playbooks"
+        linkLabel="All playbooks"
+        items={playbooks}
+        fallback={fallbackFeaturedPlaybooks}
+      />
       <WhyTrust />
-      <FinalCTA />
+      <FinalCTA content={content} />
     </>
   )
 }

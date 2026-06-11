@@ -15,6 +15,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const body = await req.json()
   try {
     const review = await prisma.reviewArticle.update({ where: { id }, data: body })
+    revalidatePath('/')
+    revalidatePath('/reviews')
+    revalidatePath(`/reviews/${review.slug}`)
+    revalidatePath('/admin/home')
+    revalidatePath('/admin/reviews')
     return NextResponse.json({ success: true, review })
   } catch { return NextResponse.json({ error: 'Failed' }, { status: 500 }) }
 }

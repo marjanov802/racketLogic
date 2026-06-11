@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Plus, Pencil } from 'lucide-react'
 import { DeleteButton } from '@/components/admin/DeleteButton'
+import { FeaturedToggle } from '@/components/admin/FeaturedToggle'
 
 async function getReviews() {
   try {
@@ -42,6 +43,7 @@ export default async function AdminReviewsPage() {
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Category</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Rating</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Status</th>
+                <th className="text-left px-4 py-3 font-semibold text-gray-600">Homepage</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
@@ -56,6 +58,9 @@ export default async function AdminReviewsPage() {
                   <td className="px-4 py-3 text-navy-900">{r.rating ? `${r.rating}/10` : '—'}</td>
                   <td className="px-4 py-3">
                     <Badge variant={r.published ? 'green' : 'yellow'}>{r.published ? 'Published' : 'Draft'}</Badge>
+                  </td>
+                  <td className="px-4 py-3">
+                    <FeaturedToggle id={r.id} model="review" featured={r.featured} />
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">

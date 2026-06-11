@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 
 async function requireAdmin() {
@@ -29,6 +30,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         isBundle: body.isBundle,
       },
     })
+    revalidatePath('/')
+    revalidatePath('/playbooks')
+    revalidatePath(`/playbooks/${playbook.slug}`)
+    revalidatePath('/admin/home')
+    revalidatePath('/admin/playbooks')
     return NextResponse.json({ success: true, playbook })
   } catch (error) {
     console.error(error)
@@ -40,7 +46,12 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   if (!await requireAdmin()) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   const { id } = await params
   try {
-    await prisma.playbook.delete({ where: { id } })
+    const playbook = await prisma.playbook.delete({ where: { id } })
+    revalidatePath('/')
+    revalidatePath('/playbooks')
+    revalidatePath(`/playbooks/${playbook.slug}`)
+    revalidatePath('/admin/home')
+    revalidatePath('/admin/playbooks')
     return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json({ error: 'Failed to delete' }, { status: 500 })

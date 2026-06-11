@@ -90,7 +90,7 @@ export function ReviewFilters({ reviews }: { reviews: ReviewItem[] }) {
                   <img
                     src={review.coverImage}
                     alt={review.productName}
-                    className="w-full aspect-video object-contain bg-white rounded-xl mb-4 border border-gray-100"
+                    className="w-full aspect-video object-contain bg-gray-50 rounded-xl mb-4 border border-gray-100 p-3"
                   />
                 ) : (
                   <div className="aspect-video bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-sm font-semibold text-gray-400 uppercase tracking-wider">

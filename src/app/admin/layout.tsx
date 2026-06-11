@@ -1,8 +1,11 @@
 import Link from 'next/link'
-import { Zap, LayoutDashboard, Calendar, BookOpen, Star, FileText, Users, Mail, TrendingUp, MessageSquare } from 'lucide-react'
+import { Zap, LayoutDashboard, Calendar, BookOpen, Star, FileText, Users, TrendingUp, MessageSquare, Home } from 'lucide-react'
+
+export const dynamic = 'force-dynamic'
 
 const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Overview' },
+  { href: '/admin/home', icon: Home, label: 'Home Page' },
   { href: '/admin/bookings', icon: Calendar, label: 'Bookings' },
   { href: '/admin/playbooks', icon: BookOpen, label: 'Playbooks' },
   { href: '/admin/reviews', icon: Star, label: 'Reviews' },

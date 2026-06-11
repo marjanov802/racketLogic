@@ -8,3 +8,422 @@
 [browser] Clerk: The prop "afterSignInUrl" is deprecated and should be replaced with the new "fallbackRedirectUrl" or "forceRedirectUrl" props instead. Learn more: https://clerk.com/docs/guides/custom-redirects#redirect-url-props (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
 [browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
 [browser] Clerk: The prop "afterSignInUrl" is deprecated and should be replaced with the new "fallbackRedirectUrl" or "forceRedirectUrl" props instead. Learn more: https://clerk.com/docs/guides/custom-redirects#redirect-url-props (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+⨯ ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  [90m841 |[0m                   </p>
+  [90m842 |[0m                         </div>
+[31m[1m>[0m [90m843 |[0m                 </[33mCard[0m>
+  [90m    |[0m                 [31m[1m^[0m
+  [90m844 |[0m               )}
+  [90m845 |[0m
+  [90m846 |[0m               {gallery.length > [35m0[0m && (
+
+Parsing ecmascript source code failed
+
+
+
+./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  [90m841 |[0m                   </p>
+  [90m842 |[0m                         </div>
+[31m[1m>[0m [90m843 |[0m                 </[33mCard[0m>
+  [90m    |[0m                  [31m[1m^^^^^^[0m
+  [90m844 |[0m               )}
+  [90m845 |[0m
+  [90m846 |[0m               {gallery.length > [35m0[0m && (
+
+Parsing ecmascript source code failed
+
+
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+⨯ ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  [90m841 |[0m                   </p>
+  [90m842 |[0m                         </div>
+[31m[1m>[0m [90m843 |[0m                 </[33mCard[0m>
+  [90m    |[0m                 [31m[1m^[0m
+  [90m844 |[0m               )}
+  [90m845 |[0m
+  [90m846 |[0m               {gallery.length > [35m0[0m && (
+
+Parsing ecmascript source code failed
+
+
+
+./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  [90m841 |[0m                   </p>
+  [90m842 |[0m                         </div>
+[31m[1m>[0m [90m843 |[0m                 </[33mCard[0m>
+  [90m    |[0m                  [31m[1m^^^^^^[0m
+  [90m844 |[0m               )}
+  [90m845 |[0m
+  [90m846 |[0m               {gallery.length > [35m0[0m && (
+
+Parsing ecmascript source code failed
+
+
+⨯ ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  [90m841 |[0m                   </p>
+  [90m842 |[0m                         </div>
+[31m[1m>[0m [90m843 |[0m                 </[33mCard[0m>
+  [90m    |[0m                 [31m[1m^[0m
+  [90m844 |[0m               )}
+  [90m845 |[0m
+  [90m846 |[0m               {gallery.length > [35m0[0m && (
+
+Parsing ecmascript source code failed
+
+
+
+./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  [90m841 |[0m                   </p>
+  [90m842 |[0m                         </div>
+[31m[1m>[0m [90m843 |[0m                 </[33mCard[0m>
+  [90m    |[0m                  [31m[1m^^^^^^[0m
+  [90m844 |[0m               )}
+  [90m845 |[0m
+  [90m846 |[0m               {gallery.length > [35m0[0m && (
+
+Parsing ecmascript source code failed
+
+
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] Uncaught Error: ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed
+
+
+    at <unknown> (Error: ./src/app/(public)/reviews/[slug]/page.tsx:843:17)
+    at <unknown> (Error: (./src/app/(public)/reviews/[slug]/page.tsx:843:17)
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:17
+Expression expected
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                 ^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] ./src/app/(public)/reviews/[slug]/page.tsx:843:18
+Unterminated regexp literal
+  841 |                   </p>
+  842 |                         </div>
+> 843 |                 </Card>
+      |                  ^^^^^^
+  844 |               )}
+  845 |
+  846 |               {gallery.length > 0 && (
+
+Parsing ecmascript source code failed 
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
+[browser] Clerk: The prop "afterSignInUrl" is deprecated and should be replaced with the new "fallbackRedirectUrl" or "forceRedirectUrl" props instead. Learn more: https://clerk.com/docs/guides/custom-redirects#redirect-url-props (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
+[browser] Clerk: The prop "afterSignInUrl" is deprecated and should be replaced with the new "fallbackRedirectUrl" or "forceRedirectUrl" props instead. Learn more: https://clerk.com/docs/guides/custom-redirects#redirect-url-props (https://novel-skylark-37.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
+[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RedirectErrorBoundary router={{...}}>
+      <InnerLayoutRouter url="/reviews/l..." tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+        <SegmentViewNode type="layout" pagePath="(public)/l...">
+          <SegmentTrieNode>
+          <script>
+          <script>
+          <script>
+          <PublicLayout>
+            <div className="min-h-scre...">
+              <Navbar>
+                <header className="sticky top...">
+                  <div className="container-lg">
+                    <div className="flex items...">
+                      <LinkComponent>
+                      <nav>
+                      <div className="hidden lg:...">
+                        <LinkComponent>
+                        <SignedIn>
+                        <SignedOut>
+                          <LinkComponent href="/sign-in">
++                           <a
++                             ref={function}
++                             onClick={function onClick}
++                             onMouseEnter={function onMouseEnter}
++                             onTouchStart={function onTouchStart}
++                             href="/sign-in"
++                           >
+                      ...
+                  ...
+              ...
+      ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at a (<anonymous>)
+    at PublicLayout (src\app\(public)\layout.tsx:7:7)
+   5 |   return (
+   6 |     <div className="min-h-screen flex flex-col">
+>  7 |       <Navbar />
+     |       ^
+   8 |       <main className="flex-1">{children}</main>
+   9 |       <Footer />
+  10 |     </div>

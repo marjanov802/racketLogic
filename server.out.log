@@ -89,3 +89,29 @@ prisma:query COMMIT
  GET /reviews/lacoste-ag-lt23-review 200 in 6.2s (next.js: 150ms, proxy.ts: 109ms, application-code: 5.9s)
  POST /reviews/lacoste-ag-lt23-review 200 in 745ms (next.js: 497ms, proxy.ts: 229ms, application-code: 19ms)
   └─ ƒ detectKeylessEnvDriftAction() in 1ms node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js
+✓ Compiled in 8.6s
+ GET /reviews/lacoste-ag-lt23-review 500 in 41s (next.js: 31.2s, proxy.ts: 3.3s, application-code: 6.5s)
+ GET /reviews/lacoste-ag-lt23-review 500 in 5.6s (next.js: 2.1s, proxy.ts: 1315ms, application-code: 2.2s)
+ GET /reviews/lacoste-ag-lt23-review 500 in 5.7s (next.js: 3.5s, proxy.ts: 1372ms, application-code: 850ms)
+✓ Compiled in 7.3s
+prisma:query BEGIN
+prisma:query DEALLOCATE ALL
+prisma:query SELECT "public"."ReviewArticle"."id", "public"."ReviewArticle"."title", "public"."ReviewArticle"."slug", "public"."ReviewArticle"."category", "public"."ReviewArticle"."productName", "public"."ReviewArticle"."brand", "public"."ReviewArticle"."excerpt", "public"."ReviewArticle"."content", "public"."ReviewArticle"."affiliateUrl", "public"."ReviewArticle"."affiliateLinks", "public"."ReviewArticle"."colourways", "public"."ReviewArticle"."colourwayFolder", "public"."ReviewArticle"."gallery", "public"."ReviewArticle"."rating", "public"."ReviewArticle"."whoIsItFor", "public"."ReviewArticle"."whoIsItNotFor", "public"."ReviewArticle"."mainBenefit", "public"."ReviewArticle"."mainDownside", "public"."ReviewArticle"."verdict", "public"."ReviewArticle"."published", "public"."ReviewArticle"."featured", "public"."ReviewArticle"."coverImage", "public"."ReviewArticle"."createdAt", "public"."ReviewArticle"."updatedAt" FROM "public"."ReviewArticle" WHERE (("public"."ReviewArticle"."slug" = $1 AND "public"."ReviewArticle"."published" = $2) OR ("public"."ReviewArticle"."slug" = $3 AND "public"."ReviewArticle"."published" = $4)) OFFSET $5
+prisma:query COMMIT
+ GET /reviews/%22C:/Users/Marjanov/git/racketLogic/public/images/reviews/Shoes/Lacoste%20AG-LT23/lacoste-ag-lt23.jpeg%22 404 in 600ms (next.js: 256ms, application-code: 344ms)
+ GET /reviews/lacoste-ag-lt23-review 200 in 19.9s (next.js: 4.3s, proxy.ts: 104ms, application-code: 15.5s)
+ POST /reviews/lacoste-ag-lt23-review 200 in 165ms (next.js: 62ms, proxy.ts: 22ms, application-code: 81ms)
+  └─ ƒ detectKeylessEnvDriftAction() in 28ms node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js
+prisma:query SELECT 1
+prisma:query BEGIN
+prisma:query DEALLOCATE ALL
+prisma:query SELECT "public"."ReviewArticle"."id", "public"."ReviewArticle"."title", "public"."ReviewArticle"."slug", "public"."ReviewArticle"."category", "public"."ReviewArticle"."productName", "public"."ReviewArticle"."brand", "public"."ReviewArticle"."excerpt", "public"."ReviewArticle"."content", "public"."ReviewArticle"."affiliateUrl", "public"."ReviewArticle"."affiliateLinks", "public"."ReviewArticle"."colourways", "public"."ReviewArticle"."colourwayFolder", "public"."ReviewArticle"."gallery", "public"."ReviewArticle"."rating", "public"."ReviewArticle"."whoIsItFor", "public"."ReviewArticle"."whoIsItNotFor", "public"."ReviewArticle"."mainBenefit", "public"."ReviewArticle"."mainDownside", "public"."ReviewArticle"."verdict", "public"."ReviewArticle"."published", "public"."ReviewArticle"."featured", "public"."ReviewArticle"."coverImage", "public"."ReviewArticle"."createdAt", "public"."ReviewArticle"."updatedAt" FROM "public"."ReviewArticle" WHERE (("public"."ReviewArticle"."slug" = $1 AND "public"."ReviewArticle"."published" = $2) OR ("public"."ReviewArticle"."slug" = $3 AND "public"."ReviewArticle"."published" = $4)) OFFSET $5
+prisma:query COMMIT
+ GET /reviews/%22C:/Users/Marjanov/git/racketLogic/public/images/reviews/Shoes/Lacoste%20AG-LT23/lacoste-ag-lt23.jpeg%22 404 in 222ms (next.js: 40ms, application-code: 182ms)
+ GET /reviews/lacoste-ag-lt23-review 200 in 1756ms (next.js: 34ms, proxy.ts: 16ms, application-code: 1705ms)
+ GET /reviews/%22C:/Users/Marjanov/git/racketLogic/public/images/reviews/Shoes/Lacoste%20AG-LT23/lacoste-ag-lt23.jpeg%22 404 in 249ms (next.js: 48ms, application-code: 200ms)
+ POST /reviews/lacoste-ag-lt23-review 200 in 587ms (next.js: 383ms, proxy.ts: 56ms, application-code: 148ms)
+  └─ ƒ detectKeylessEnvDriftAction() in 1ms node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js
+ GET /reviews/%22C:/Users/Marjanov/git/racketLogic/public/images/reviews/Shoes/Lacoste%20AG-LT23/lacoste-ag-lt23.jpeg%22 404 in 552ms (next.js: 71ms, application-code: 482ms)
+ POST /reviews/lacoste-ag-lt23-review 200 in 101ms (next.js: 32ms, proxy.ts: 44ms, application-code: 26ms)
+  └─ ƒ detectKeylessEnvDriftAction() in 1ms node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js

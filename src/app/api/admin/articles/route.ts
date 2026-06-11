@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { slugify } from '@/lib/utils'
 
@@ -20,6 +21,10 @@ export async function POST(req: NextRequest) {
         readingTime: body.readingTime, published: body.published ?? false, featured: body.featured ?? false,
       },
     })
+    revalidatePath('/')
+    revalidatePath('/learn')
+    revalidatePath('/admin/home')
+    revalidatePath('/admin/articles')
     return NextResponse.json({ success: true, article })
   } catch { return NextResponse.json({ error: 'Failed' }, { status: 500 }) }
 }

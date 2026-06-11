@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { slugify } from '@/lib/utils'
 
@@ -29,6 +30,10 @@ export async function POST(req: NextRequest) {
         isBundle: body.isBundle ?? false,
       },
     })
+    revalidatePath('/')
+    revalidatePath('/playbooks')
+    revalidatePath('/admin/home')
+    revalidatePath('/admin/playbooks')
     return NextResponse.json({ success: true, playbook })
   } catch (error) {
     console.error(error)
