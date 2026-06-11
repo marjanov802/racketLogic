@@ -34,6 +34,31 @@ function extractOutputText(response: any) {
   return ''
 }
 
+function getReviewModel() {
+  const model = process.env.OPENAI_REVIEW_MODEL?.trim()
+  if (!model || model === '...' || model.includes('FILL_IN')) return 'gpt-4o-mini'
+  return model
+}
+
+function getOpenAIErrorMessage(result: any) {
+  const code = result?.error?.code
+  const message = result?.error?.message
+
+  if (code === 'insufficient_quota') {
+    return 'OpenAI quota/billing is not active for this API key. Add billing or credits in the OpenAI dashboard, then try again.'
+  }
+
+  if (code === 'invalid_api_key') {
+    return 'The OpenAI API key is invalid. Check OPENAI_API_KEY in .env.local and Vercel.'
+  }
+
+  if (code === 'model_not_found') {
+    return `The OpenAI model "${getReviewModel()}" is not available for this key. Use gpt-4o-mini or another model your account has access to.`
+  }
+
+  return typeof message === 'string' && message ? message : 'Failed to generate review draft'
+}
+
 function categoryGuidance(category: string) {
   const guidance: Record<string, string> = {
     Rackets:
@@ -108,7 +133,7 @@ Rules:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: process.env.OPENAI_REVIEW_MODEL ?? 'gpt-4o-mini',
+        model: getReviewModel(),
         input: [
           {
             role: 'system',
@@ -132,10 +157,14 @@ Rules:
 
     if (!response.ok) {
       console.error('OpenAI review draft error:', result)
-      return NextResponse.json({ error: 'Failed to generate review draft' }, { status: 500 })
+      return NextResponse.json({ error: getOpenAIErrorMessage(result) }, { status: response.status })
     }
 
     const outputText = extractOutputText(result)
+    if (!outputText) {
+      return NextResponse.json({ error: 'OpenAI returned an empty draft. Try again with more detailed notes.' }, { status: 500 })
+    }
+
     const draft = JSON.parse(outputText)
 
     return NextResponse.json({ success: true, draft })

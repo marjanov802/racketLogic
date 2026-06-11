@@ -58,41 +58,41 @@ const lessIdealFor = [
 ]
 
 const shoeSpecs = [
-  ['Model reviewed', 'ASICS Gel Resolution 9'],
-  ['Court type', 'Hard court / all-court'],
-  ['Style', 'Stability shoe'],
-  ['Fit feel', 'Secure, supportive'],
-  ['Best for', 'Baseline movement'],
-  ['Main trade-off', 'Not the lightest speed shoe'],
+  ['Product type', 'Tennis shoe'],
+  ['Court type', 'Depends on model'],
+  ['Style', 'Speed / stability / all-court'],
+  ['Fit feel', 'Check width, heel hold and forefoot space'],
+  ['Best judged by', 'Movement, comfort, grip and durability'],
+  ['Main trade-off', 'Every shoe balances flexibility, stability and outsole life differently'],
 ]
 
 const shoeTechnologyNotes = [
   {
-    title: 'DYNAWRAP support',
-    body: 'Designed to hold the foot more securely during side-to-side movement.',
+    title: 'Upper and internal fit',
+    body: 'The upper and internal hold decide how secure the foot feels inside the shoe, especially when changing direction.',
   },
   {
-    title: 'GEL cushioning',
-    body: 'Adds impact protection underfoot, especially useful for hard-court players.',
+    title: 'Midsole and support structure',
+    body: 'The middle of the shoe affects stability, flexibility and how naturally the foot rolls from heel to toe.',
   },
   {
-    title: 'Durable outsole',
-    body: 'Built more for stability and durability than a minimal, lightweight feel.',
+    title: 'Outsole shape and contact area',
+    body: 'A wider sole can feel very stable, but it can also make a shoe feel flatter or harder to rotate through.',
   },
 ]
 
 const shoeRecommendedFor = [
-  'Baseline players who move side to side a lot',
-  'Players who want stability before speed',
-  'Hard-court players who wear through shoes quickly',
-  'Players who like a locked-in supportive fit',
+  'Players who know what fit and movement feel they prefer',
+  'Players comparing stability against flexibility',
+  'Players who want practical notes before buying',
+  'Players who care about comfort, grip and durability rather than just looks',
 ]
 
 const shoeLessIdealFor = [
-  'Players who want the lightest possible shoe',
-  'Players who prefer a soft slipper-like upper',
-  'Very wide feet unless the fit works for you',
-  'Players who mainly want speed-shoe flexibility',
+  'Players buying without trying the fit if they are between sizes',
+  'Players ignoring how the shoe feels when pushing off, recovering and rotating',
+  'Players choosing only by brand or colourway',
+  'Players who need medical or injury-specific footwear advice',
 ]
 
 const categorySections: Record<string, { eyebrow: string; title: string; items: { label: string; body: string }[] }[]> = {
@@ -358,6 +358,48 @@ const reviewConfigOverrides: Record<string, CategoryConfig> = {
     colourwayFolder: '/images/reviews/Shoes/Lacoste AG-LT23',
     finalIntro: 'This is strictly my opinion from wearing the shoe. I think the Lacoste AG-LT23 feels excellent on foot: light, secure, breathable and very comfortable. The problem is durability. The outsole and grip wear too quickly, especially with sliding, so the shoe feels better than it lasts.',
   },
+  'lacoste-ag-lt23-lite-review': {
+    label: 'shoe',
+    specs: [
+      ['Model reviewed', 'Lacoste AG-LT23 Lite'],
+      ['Court type', 'Tennis shoe / court shoe'],
+      ['Style', 'Stable, structured and stiff'],
+      ['Sole feel', 'Wide, flat and not very flexible'],
+      ['Fit feel', 'Sock-like internal hold with some side space from the wide base'],
+      ['Best for', 'Players who want grounded stability more than flexible movement'],
+      ['Main trade-off', 'Limited toe-to-heel rotation and push-off flexibility'],
+    ],
+    technologies: [
+      {
+        title: 'Wide base and stable platform',
+        body: 'The surface area underneath the shoe feels quite wide, which gives the shoe a stable planted feeling. The trade-off is that it can feel flat and less natural when you want the foot to roll, rotate or push through awkward positions.',
+      },
+      {
+        title: 'Stiff midfoot structure',
+        body: 'The middle structure does not feel flexible. For me, the shoe feels stiff through the sole and midfoot, so it does not encourage smooth movement from the toes through to the heel.',
+      },
+      {
+        title: 'Sock-like internal hold',
+        body: 'Inside the shoe there is a sock-like material that holds the foot separately from the outer shoe. If you like a tight, wrapped feeling around the foot, that can feel secure. If you prefer a more open or natural fit, it may feel restrictive.',
+      },
+    ],
+    feel: 'In my opinion, the Lacoste AG-LT23 Lite feels stable but not very free. The sole does not feel flexible, and neither does the mid structure. It feels quite flat underfoot, and rotation or movement from the toes to the heel feels difficult. I would not call it a good shoe for flexible or aggressive movement. The stability is there, mainly because the bottom surface area feels wide and grounded, but that same shape makes the shoe feel less natural when you push from the toes or move from awkward angles.',
+    recommendedFor: [
+      'Players who like a stiff, stable and grounded shoe',
+      'Players who do not move extremely aggressively',
+      'Slower or more amateur movers who want heavy-footed stability',
+      'Players who like a tight sock-like internal hold',
+      'Players who mostly move in simpler patterns rather than sharp toe pushes and awkward recoveries',
+    ],
+    lessIdealFor: [
+      'Players who want flexible, natural movement through the foot',
+      'Players who push hard from the toes',
+      'Players who recover from awkward angles often',
+      'Fast movers who need the shoe to rotate and flex easily',
+      'Players who dislike a tight internal sock-like feel',
+    ],
+    finalIntro: 'This is strictly my opinion from how the shoe feels on foot. I would describe the Lacoste AG-LT23 Lite as stable, stiff and flat rather than flexible or explosive. If you want a planted shoe and do not move too aggressively, it could make sense. If you rely on sharp pushes, toe rotation and flexible recovery steps, I would be careful with it.',
+  },
 }
 
 const reviewSectionOverrides: typeof categorySections = {
@@ -396,6 +438,44 @@ const reviewSectionOverrides: typeof categorySections = {
         { label: 'Colourways', body: 'Colourways change by season and retailer, so the review page should show the main colour options available at the time of writing.' },
         { label: 'Clay model', body: 'There is a clay-court model, and the tread pattern works well for clay movement.' },
         { label: 'No grass model', body: 'There is no grass-court model, so players needing a proper grass outsole should look elsewhere.' },
+      ],
+    },
+  ],
+  'lacoste-ag-lt23-lite-review': [
+    {
+      eyebrow: 'Movement',
+      title: 'Stiff, flat and difficult to rotate through',
+      items: [
+        { label: 'Toe-to-heel movement', body: 'The shoe does not feel easy to roll through from the toes to the heel. For me, that makes it feel awkward when trying to move fluidly or push off quickly.' },
+        { label: 'Flexibility', body: 'The sole and mid structure both feel stiff. This gives support, but it does not give that free, flexible court movement feeling.' },
+        { label: 'Awkward angles', body: 'When pushing from the toes or recovering from awkward positions, the shoe feels less natural. That is where I would be most cautious.' },
+      ],
+    },
+    {
+      eyebrow: 'Stability',
+      title: 'Very stable from the wide base',
+      items: [
+        { label: 'Ground contact', body: 'The bottom surface area feels good and wide, which gives the shoe a stable, planted feeling.' },
+        { label: 'Flat platform', body: 'That flat platform is both the strength and weakness. It feels stable, but not especially dynamic.' },
+        { label: 'Ankle confidence', body: 'Because the shoe is stiff and harder to rotate through, I would not love it for extreme movement. It can give the feeling that awkward positions might put stress through the ankle.' },
+      ],
+    },
+    {
+      eyebrow: 'Fit',
+      title: 'Sock-like hold with a wider platform feel',
+      items: [
+        { label: 'Internal hold', body: 'Inside the shoe there is a sock-like material that holds the foot in place separately from the outer shell of the shoe.' },
+        { label: 'Side space', body: 'It fits a little wider in the base, almost as if there is space to the side of the foot because the sole is wide.' },
+        { label: 'Who likes this fit', body: 'If you enjoy a tight internal wrap and a stable base, this could feel secure. If you want a more natural, flexible fit, it may feel restrictive.' },
+      ],
+    },
+    {
+      eyebrow: 'Player type',
+      title: 'Better for steady movers than explosive movers',
+      items: [
+        { label: 'Good fit', body: 'A slower or more amateur mover with heavier feet may not notice the lack of flexibility as much, and may benefit from the stable base.' },
+        { label: 'Less ideal', body: 'Players who move sharply, push hard from the toes or often recover from awkward angles may find the shoe too stiff and flat.' },
+        { label: 'Overall identity', body: 'This feels more like a stable, grounded shoe than a fast, flexible movement shoe.' },
       ],
     },
   ],

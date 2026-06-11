@@ -15,6 +15,8 @@ export const metadata: Metadata = {
     'Tennis gear reviews and practical buying advice. Rackets, strings, shoes, grips and accessories reviewed with clear verdicts.',
 }
 
+export const dynamic = 'force-dynamic'
+
 const placeholderCategories = [
   { name: 'Rackets', label: 'Frame reviews', desc: 'Control, power and player frames reviewed by setup and player type.' },
   { name: 'Strings', label: 'String tests', desc: 'Poly, multifilament, synthetic gut and hybrid strings explained clearly.' },
