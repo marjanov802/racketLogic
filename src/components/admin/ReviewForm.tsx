@@ -143,7 +143,17 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
   const [title, setTitle] = useState(review?.title ?? '')
   const [slug, setSlug] = useState(review?.slug ?? '')
   const [category, setCategory] = useState(review?.category ?? '')
+  const [productName, setProductName] = useState(review?.productName ?? '')
+  const [brand, setBrand] = useState(review?.brand ?? '')
+  const [excerpt, setExcerpt] = useState(review?.excerpt ?? '')
   const [content, setContent] = useState(review?.content ?? '')
+  const [whoIsItFor, setWhoIsItFor] = useState(review?.whoIsItFor ?? '')
+  const [whoIsItNotFor, setWhoIsItNotFor] = useState(review?.whoIsItNotFor ?? '')
+  const [mainBenefit, setMainBenefit] = useState(review?.mainBenefit ?? '')
+  const [mainDownside, setMainDownside] = useState(review?.mainDownside ?? '')
+  const [verdict, setVerdict] = useState(review?.verdict ?? '')
+  const [aiNotes, setAiNotes] = useState('')
+  const [aiLoading, setAiLoading] = useState(false)
   const [affiliateLinks, setAffiliateLinks] = useState<AffiliateLink[]>(initialAffiliateLinks(review))
   const [colourways, setColourways] = useState<Colourway[]>(initialColourways(review))
   const [gallery, setGallery] = useState<GalleryItem[]>(initialGallery(review))
@@ -216,6 +226,60 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
     setGallery((current) => current.filter((_, i) => i !== index))
   }
 
+  async function handleStructureDraft() {
+    if (!category) {
+      toast.error('Choose a review category first')
+      return
+    }
+
+    if (!aiNotes.trim()) {
+      toast.error('Add your rough thoughts first')
+      return
+    }
+
+    setAiLoading(true)
+
+    try {
+      const res = await fetch('/api/admin/reviews/structure-draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          productName,
+          brand,
+          category,
+          notes: aiNotes,
+        }),
+      })
+
+      const result = await res.json()
+      if (!res.ok) throw new Error(result.error ?? 'Failed to structure draft')
+
+      const draft = result.draft as {
+        excerpt?: string
+        content?: string
+        whoIsItFor?: string
+        whoIsItNotFor?: string
+        mainBenefit?: string
+        mainDownside?: string
+        verdict?: string
+      }
+
+      setExcerpt(draft.excerpt ?? '')
+      setContent(draft.content ?? '')
+      setWhoIsItFor(draft.whoIsItFor ?? '')
+      setWhoIsItNotFor(draft.whoIsItNotFor ?? '')
+      setMainBenefit(draft.mainBenefit ?? '')
+      setMainDownside(draft.mainDownside ?? '')
+      setVerdict(draft.verdict ?? '')
+      toast.success('Review draft structured')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to structure review')
+    } finally {
+      setAiLoading(false)
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
@@ -236,9 +300,9 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
       title: data.get('title'),
       slug: data.get('slug'),
       category: data.get('category'),
-      productName: data.get('productName'),
-      brand: data.get('brand'),
-      excerpt: data.get('excerpt'),
+      productName,
+      brand,
+      excerpt,
       content,
       affiliateUrl: firstAffiliateUrl,
       affiliateLinks: cleanAffiliateLinks,
@@ -247,11 +311,11 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
       gallery: cleanGallery,
       coverImage: data.get('coverImage'),
       rating: data.get('rating') ? parseInt(data.get('rating') as string) : null,
-      whoIsItFor: data.get('whoIsItFor'),
-      whoIsItNotFor: data.get('whoIsItNotFor'),
-      mainBenefit: data.get('mainBenefit'),
-      mainDownside: data.get('mainDownside'),
-      verdict: data.get('verdict'),
+      whoIsItFor,
+      whoIsItNotFor,
+      mainBenefit,
+      mainDownside,
+      verdict,
       published: data.get('published') === 'true',
       featured: data.get('featured') === 'true',
     }
@@ -281,8 +345,8 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
           <Input label="Review Title" name="title" required value={title} onChange={handleTitleChange} placeholder="e.g. Wilson Blade 98 v8 Review" />
           <Input label="Slug" name="slug" required value={slug} onChange={(e) => setSlug(e.target.value)} />
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Product Name" name="productName" required defaultValue={review?.productName} placeholder="e.g. Blade 98 v8" />
-            <Input label="Brand" name="brand" required defaultValue={review?.brand} placeholder="e.g. Wilson" />
+            <Input label="Product Name" name="productName" required value={productName} onChange={(e) => setProductName(e.target.value)} placeholder="e.g. Blade 98 v8" />
+            <Input label="Brand" name="brand" required value={brand} onChange={(e) => setBrand(e.target.value)} placeholder="e.g. Wilson" />
           </div>
           <Select
             label="Category"
@@ -309,7 +373,7 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
               </p>
             </div>
           )}
-          <Textarea label="Short excerpt" name="excerpt" required defaultValue={review?.excerpt} rows={2} placeholder="1-2 sentence summary shown in listings" />
+          <Textarea label="Short excerpt" name="excerpt" required value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} placeholder="1-2 sentence summary shown in listings" />
           <Input label="Cover image URL (optional)" name="coverImage" defaultValue={review?.coverImage ?? ''} placeholder="/images/reviews/example.jpg" />
           <Input
             label="Colourway folder path (optional)"
@@ -322,6 +386,30 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
           </p>
           <Input label="Rating (1-10, optional/internal)" name="rating" type="number" min={1} max={10} defaultValue={review?.rating} placeholder="e.g. 8" />
         </div>
+      </Card>
+
+      <Card className="border-lime-200 bg-lime-50/40">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-4">
+          <div>
+            <h3 className="font-bold text-navy-900">AI Review Structurer</h3>
+            <p className="text-sm text-gray-600 mt-1">
+              Type your rough thoughts and feelings. This will structure them into the review fields below without publishing anything.
+            </p>
+          </div>
+          <Button type="button" onClick={handleStructureDraft} loading={aiLoading}>
+            Structure my notes
+          </Button>
+        </div>
+        <Textarea
+          label="Your rough notes"
+          value={aiNotes}
+          onChange={(e) => setAiNotes(e.target.value)}
+          rows={8}
+          placeholder="Example: The shoe feels light and secure. The heel padding is comfortable. It works for narrow feet. Durability is poor, especially when sliding. Clay pattern is good but there is no grass model..."
+        />
+        <p className="mt-3 text-xs text-gray-500">
+          It will overwrite the excerpt, quick verdict fields and full review content with a new structured draft. You can edit everything before saving.
+        </p>
       </Card>
 
       <Card>
@@ -545,11 +633,11 @@ export function ReviewForm({ review }: { review?: ReviewData }) {
       <Card>
         <h3 className="font-bold text-navy-900 mb-4">Quick Verdict Fields</h3>
         <div className="space-y-4">
-          <Textarea label="Who it's for" name="whoIsItFor" defaultValue={review?.whoIsItFor ?? ''} rows={2} />
-          <Textarea label="Who it's not for" name="whoIsItNotFor" defaultValue={review?.whoIsItNotFor ?? ''} rows={2} />
-          <Input label="Main benefit" name="mainBenefit" defaultValue={review?.mainBenefit ?? ''} />
-          <Input label="Main downside" name="mainDownside" defaultValue={review?.mainDownside ?? ''} />
-          <Textarea label="RacketLogic Verdict" name="verdict" defaultValue={review?.verdict ?? ''} rows={3} placeholder="The final verdict shown at the bottom of the review." />
+          <Textarea label="Who it's for" name="whoIsItFor" value={whoIsItFor} onChange={(e) => setWhoIsItFor(e.target.value)} rows={2} />
+          <Textarea label="Who it's not for" name="whoIsItNotFor" value={whoIsItNotFor} onChange={(e) => setWhoIsItNotFor(e.target.value)} rows={2} />
+          <Input label="Main benefit" name="mainBenefit" value={mainBenefit} onChange={(e) => setMainBenefit(e.target.value)} />
+          <Input label="Main downside" name="mainDownside" value={mainDownside} onChange={(e) => setMainDownside(e.target.value)} />
+          <Textarea label="RacketLogic Verdict" name="verdict" value={verdict} onChange={(e) => setVerdict(e.target.value)} rows={3} placeholder="The final verdict shown at the bottom of the review." />
         </div>
       </Card>
 
