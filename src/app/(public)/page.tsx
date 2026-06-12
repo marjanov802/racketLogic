@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/Card'
 import { AnimateIn } from '@/components/ui/AnimateIn'
 import { prisma } from '@/lib/prisma'
 import { mergeHomeContent, type HomeContent } from '@/lib/home-content'
+import { firstImageFromPublicFolder, getUsablePublicMediaUrl } from '@/lib/public-media'
 import {
   BookOpen,
   Dumbbell,
@@ -81,6 +82,10 @@ type FeaturedHomeItem = {
   meta?: string
 }
 
+function getReviewCardImage(coverImage: string | null, colourwayFolder: string | null) {
+  return getUsablePublicMediaUrl(coverImage) ?? firstImageFromPublicFolder(colourwayFolder)
+}
+
 async function getHomePageData() {
   try {
     const [setting, reviews, articles, playbooks] = await Promise.all([
@@ -89,7 +94,7 @@ async function getHomePageData() {
         where: { published: true, featured: true },
         orderBy: { updatedAt: 'desc' },
         take: 3,
-        select: { title: true, slug: true, excerpt: true, category: true, brand: true, coverImage: true },
+        select: { title: true, slug: true, excerpt: true, category: true, brand: true, coverImage: true, colourwayFolder: true },
       }),
       prisma.learnArticle.findMany({
         where: { published: true, featured: true },
@@ -112,7 +117,7 @@ async function getHomePageData() {
         description: review.excerpt,
         category: review.category,
         href: `/reviews/${review.slug}`,
-        image: review.coverImage,
+        image: getReviewCardImage(review.coverImage, review.colourwayFolder),
         meta: review.brand,
       })),
       articles: articles.map((article): FeaturedHomeItem => ({

@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import fs from 'node:fs'
-import path from 'node:path'
 import { Filter } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { Disclaimer } from '@/components/ui/Disclaimer'
 import { ReviewFilters } from '@/components/reviews/ReviewFilters'
 import { prisma } from '@/lib/prisma'
+import { firstImageFromPublicFolder, getUsablePublicMediaUrl } from '@/lib/public-media'
 
 export const metadata: Metadata = {
   title: 'Blog & Gear Reviews',
@@ -24,46 +23,8 @@ const placeholderCategories = [
   { name: 'Grips', label: 'Grip setup', desc: 'Overgrips and replacement grips reviewed for feel, sweat and sizing.' },
 ]
 
-const imageExtensions = new Set(['.avif', '.jpeg', '.jpg', '.png', '.webp'])
-
-function normalisePublicPath(value: string | null | undefined) {
-  if (!value) return null
-  const cleaned = value.trim().replace(/^"|"$/g, '').replace(/\\/g, '/').replace(/^public\//, '')
-  if (!cleaned || cleaned.includes('..')) return null
-  if (cleaned.startsWith('http://') || cleaned.startsWith('https://')) return cleaned
-  return cleaned.startsWith('/') ? cleaned : `/${cleaned}`
-}
-
-function publicFileExists(publicPath: string) {
-  if (publicPath.startsWith('http://') || publicPath.startsWith('https://')) return true
-  const publicRoot = path.resolve(process.cwd(), 'public')
-  const resolvedFile = path.resolve(publicRoot, decodeURI(publicPath).replace(/^\//, ''))
-  return resolvedFile.startsWith(publicRoot) && fs.existsSync(resolvedFile)
-}
-
-function firstImageFromPublicFolder(folderPath: string | null | undefined) {
-  const publicFolder = normalisePublicPath(folderPath)
-  if (!publicFolder || publicFolder.startsWith('http')) return null
-
-  const publicRoot = path.resolve(process.cwd(), 'public')
-  const resolvedFolder = path.resolve(publicRoot, decodeURI(publicFolder).replace(/^\//, ''))
-  if (!resolvedFolder.startsWith(publicRoot) || !fs.existsSync(resolvedFolder)) return null
-
-  const firstImage = fs
-    .readdirSync(resolvedFolder, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && imageExtensions.has(path.extname(entry.name).toLowerCase()))
-    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }))[0]
-
-  return firstImage ? encodeURI(`${publicFolder}/${firstImage.name}`) : null
-}
-
 function getReviewCardImage(coverImage: string | null, colourwayFolder: string | null) {
-  const publicCover = normalisePublicPath(coverImage)
-  if (publicCover && publicFileExists(publicCover)) {
-    return publicCover.startsWith('http') ? publicCover : encodeURI(publicCover)
-  }
-
-  return firstImageFromPublicFolder(colourwayFolder)
+  return getUsablePublicMediaUrl(coverImage) ?? firstImageFromPublicFolder(colourwayFolder)
 }
 
 async function getReviews() {

@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import fs from 'node:fs'
-import path from 'node:path'
 import { ArrowLeft, ArrowRight, Check, ExternalLink } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { Disclaimer } from '@/components/ui/Disclaimer'
 import { prisma } from '@/lib/prisma'
+import { getImagesFromPublicFolder, getUsablePublicMediaUrl } from '@/lib/public-media'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -516,18 +515,11 @@ function getAffiliateLinks(value: unknown, fallbackUrl: string | null): Affiliat
 }
 
 function isUsableMediaUrl(value: string | undefined) {
-  if (!value) return false
-  const trimmed = value.trim().replace(/^"|"$/g, '')
-  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return true
-  if (!trimmed.startsWith('/')) return false
-
-  const publicRoot = path.resolve(process.cwd(), 'public')
-  const mediaPath = path.resolve(publicRoot, decodeURI(trimmed).replace(/^\//, ''))
-  return mediaPath.startsWith(publicRoot) && fs.existsSync(mediaPath)
+  return Boolean(getUsablePublicMediaUrl(value))
 }
 
 function cleanMediaUrl(value: string) {
-  return value.trim().replace(/^"|"$/g, '')
+  return getUsablePublicMediaUrl(value) ?? ''
 }
 
 function getColourways(value: unknown, fallback: Colourway[] | undefined): DisplayColourway[] | undefined {
@@ -553,46 +545,12 @@ function getColourways(value: unknown, fallback: Colourway[] | undefined): Displ
     }))
 }
 
-const imageExtensions = new Set(['.avif', '.jpeg', '.jpg', '.png', '.webp'])
-
-function normalisePublicFolderPath(folderPath: string | null | undefined) {
-  if (!folderPath) return null
-  const cleaned = folderPath.trim().replace(/\\/g, '/').replace(/^public\//, '')
-  if (!cleaned) return null
-
-  const publicPath = cleaned.startsWith('/') ? cleaned : `/${cleaned}`
-  if (publicPath.includes('..')) return null
-
-  return publicPath.replace(/\/+$/, '')
-}
-
-function labelFromFilename(filename: string) {
-  return filename
-    .replace(/\.[^.]+$/, '')
-    .replace(/[-_]+/g, ' ')
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
 function getColourwaysFromFolder(folderPath: string | null | undefined): DisplayColourway[] {
-  const publicPath = normalisePublicFolderPath(folderPath)
-  if (!publicPath) return []
-
-  const publicRoot = path.resolve(process.cwd(), 'public')
-  const resolvedFolder = path.resolve(publicRoot, publicPath.replace(/^\//, ''))
-  if (!resolvedFolder.startsWith(publicRoot)) return []
-  if (!fs.existsSync(resolvedFolder)) return []
-
-  return fs
-    .readdirSync(resolvedFolder, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && imageExtensions.has(path.extname(entry.name).toLowerCase()))
-    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }))
-    .map((entry) => ({
-      name: labelFromFilename(entry.name),
-      image: encodeURI(`${publicPath}/${entry.name}`),
-      links: [],
-    }))
+  return getImagesFromPublicFolder(folderPath).map((image) => ({
+    name: image.name,
+    image: image.url,
+    links: [],
+  }))
 }
 
 function mergeColourways(primary: DisplayColourway[] | undefined, folderItems: DisplayColourway[]) {
@@ -618,6 +576,10 @@ function getGallery(value: unknown): Required<GalleryItem>[] {
       label: item.label ?? '',
       url: cleanMediaUrl(item.url!),
     }))
+}
+
+function getHeroImage(coverImage: string | null, folderColourways: DisplayColourway[]) {
+  return getUsablePublicMediaUrl(coverImage) ?? folderColourways[0]?.image ?? null
 }
 
 function hasHtmlContent(value: string | null | undefined) {
@@ -655,6 +617,7 @@ export default async function ReviewPage({ params }: PageProps) {
   const lessFit = config.lessIdealFor
   const extraSections = reviewSectionOverrides[review.slug] ?? categorySections[review.category] ?? categorySections.Accessories
   const folderColourways = getColourwaysFromFolder(review.colourwayFolder ?? config.colourwayFolder)
+  const heroImage = getHeroImage(review.coverImage, folderColourways)
   const colourways = mergeColourways(
     getColourways(review.colourways, folderColourways.length > 0 ? undefined : config.colourways),
     folderColourways
@@ -683,8 +646,8 @@ export default async function ReviewPage({ params }: PageProps) {
             </div>
 
             <div className="rounded-2xl border border-white/10 bg-white p-5">
-              {review.coverImage ? (
-                <img src={review.coverImage} alt={review.productName} className="w-full aspect-[4/3] object-contain" />
+              {heroImage ? (
+                <img src={heroImage} alt={review.productName} className="w-full aspect-[4/3] object-contain" />
               ) : (
                 <div className="aspect-[4/3] flex items-center justify-center text-sm font-semibold text-gray-400 uppercase">
                   {review.category}
